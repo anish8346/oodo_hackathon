@@ -96,7 +96,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             className="border-l-4 border-[#F97316] pl-6"
           >
             <p className="text-xl font-medium italic leading-relaxed text-white">
-              "Travel is the only thing you buy that makes you richer."
+              &ldquo;Travel is the only thing you buy that makes you richer.&rdquo;
             </p>
           </motion.div>
         </div>

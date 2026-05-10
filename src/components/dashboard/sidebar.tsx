@@ -70,7 +70,7 @@ export function Sidebar({
       >
         <div className="border-b border-slate-200 p-6">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-600 to-sky-500">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-yellow-300">
               <Plane className="h-5 w-5 text-white" />
             </div>
             <span className="text-xl font-semibold text-slate-950">Traveloop</span>
@@ -93,8 +93,8 @@ export function Sidebar({
                 className={cn(
                   "flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-left text-sm font-medium transition-all duration-200",
                   isActive
-                    ? "bg-emerald-600 text-white shadow-sm"
-                    : "text-slate-500 hover:bg-emerald-50 hover:text-slate-950"
+                    ? "bg-amber-500 text-slate-950 shadow-sm"
+                    : "text-slate-500 hover:bg-amber-50 hover:text-slate-950"
                 )}
               >
                 <Icon className="h-5 w-5 shrink-0" />
@@ -114,7 +114,7 @@ export function Sidebar({
             <button
               type="button"
               aria-label="Log out"
-              className="rounded-lg p-2 text-slate-500 transition-colors hover:bg-emerald-50 hover:text-slate-950"
+              className="rounded-lg p-2 text-slate-500 transition-colors hover:bg-amber-50 hover:text-slate-950"
               onClick={() => {
                 onLogout?.();
                 toast.success("Logged out successfully");

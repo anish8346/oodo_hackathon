@@ -51,7 +51,19 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  User: 'User'
+  User: 'User',
+  Trip: 'Trip',
+  TripMember: 'TripMember',
+  City: 'City',
+  TripStop: 'TripStop',
+  CityActivity: 'CityActivity',
+  StopActivity: 'StopActivity',
+  TripBudget: 'TripBudget',
+  BudgetItem: 'BudgetItem',
+  PackingChecklist: 'PackingChecklist',
+  TripNote: 'TripNote',
+  SharedItinerary: 'SharedItinerary',
+  SavedDestination: 'SavedDestination'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -83,11 +95,183 @@ export const UserScalarFieldEnum = {
   image: 'image',
   password: 'password',
   emailVerified: 'emailVerified',
+  language: 'language',
+  preferredCurrency: 'preferredCurrency',
+  isAdmin: 'isAdmin',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const TripScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  title: 'title',
+  description: 'description',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  coverImageUrl: 'coverImageUrl',
+  status: 'status',
+  visibility: 'visibility',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TripScalarFieldEnum = (typeof TripScalarFieldEnum)[keyof typeof TripScalarFieldEnum]
+
+
+export const TripMemberScalarFieldEnum = {
+  id: 'id',
+  tripId: 'tripId',
+  userId: 'userId',
+  role: 'role',
+  joinedAt: 'joinedAt'
+} as const
+
+export type TripMemberScalarFieldEnum = (typeof TripMemberScalarFieldEnum)[keyof typeof TripMemberScalarFieldEnum]
+
+
+export const CityScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  country: 'country',
+  region: 'region',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  costIndex: 'costIndex',
+  popularityScore: 'popularityScore',
+  imageUrl: 'imageUrl',
+  description: 'description'
+} as const
+
+export type CityScalarFieldEnum = (typeof CityScalarFieldEnum)[keyof typeof CityScalarFieldEnum]
+
+
+export const TripStopScalarFieldEnum = {
+  id: 'id',
+  tripId: 'tripId',
+  cityId: 'cityId',
+  stopOrder: 'stopOrder',
+  arrivalDate: 'arrivalDate',
+  departureDate: 'departureDate',
+  notes: 'notes'
+} as const
+
+export type TripStopScalarFieldEnum = (typeof TripStopScalarFieldEnum)[keyof typeof TripStopScalarFieldEnum]
+
+
+export const CityActivityScalarFieldEnum = {
+  id: 'id',
+  cityId: 'cityId',
+  title: 'title',
+  description: 'description',
+  category: 'category',
+  imageUrl: 'imageUrl',
+  estimatedCost: 'estimatedCost',
+  currency: 'currency',
+  durationMinutes: 'durationMinutes',
+  avgRating: 'avgRating',
+  isPopular: 'isPopular'
+} as const
+
+export type CityActivityScalarFieldEnum = (typeof CityActivityScalarFieldEnum)[keyof typeof CityActivityScalarFieldEnum]
+
+
+export const StopActivityScalarFieldEnum = {
+  id: 'id',
+  stopId: 'stopId',
+  cityActivityId: 'cityActivityId',
+  activityDate: 'activityDate',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  actualCost: 'actualCost',
+  status: 'status',
+  sortOrder: 'sortOrder',
+  notes: 'notes'
+} as const
+
+export type StopActivityScalarFieldEnum = (typeof StopActivityScalarFieldEnum)[keyof typeof StopActivityScalarFieldEnum]
+
+
+export const TripBudgetScalarFieldEnum = {
+  id: 'id',
+  tripId: 'tripId',
+  totalBudget: 'totalBudget',
+  estimatedTotal: 'estimatedTotal',
+  actualSpent: 'actualSpent',
+  currency: 'currency',
+  overBudgetAlert: 'overBudgetAlert'
+} as const
+
+export type TripBudgetScalarFieldEnum = (typeof TripBudgetScalarFieldEnum)[keyof typeof TripBudgetScalarFieldEnum]
+
+
+export const BudgetItemScalarFieldEnum = {
+  id: 'id',
+  budgetId: 'budgetId',
+  stopId: 'stopId',
+  category: 'category',
+  label: 'label',
+  estimatedAmount: 'estimatedAmount',
+  actualAmount: 'actualAmount',
+  currency: 'currency',
+  itemDate: 'itemDate'
+} as const
+
+export type BudgetItemScalarFieldEnum = (typeof BudgetItemScalarFieldEnum)[keyof typeof BudgetItemScalarFieldEnum]
+
+
+export const PackingChecklistScalarFieldEnum = {
+  id: 'id',
+  tripId: 'tripId',
+  itemName: 'itemName',
+  category: 'category',
+  isPacked: 'isPacked',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt'
+} as const
+
+export type PackingChecklistScalarFieldEnum = (typeof PackingChecklistScalarFieldEnum)[keyof typeof PackingChecklistScalarFieldEnum]
+
+
+export const TripNoteScalarFieldEnum = {
+  id: 'id',
+  tripId: 'tripId',
+  userId: 'userId',
+  stopId: 'stopId',
+  title: 'title',
+  content: 'content',
+  noteDate: 'noteDate',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TripNoteScalarFieldEnum = (typeof TripNoteScalarFieldEnum)[keyof typeof TripNoteScalarFieldEnum]
+
+
+export const SharedItineraryScalarFieldEnum = {
+  id: 'id',
+  tripId: 'tripId',
+  publicSlug: 'publicSlug',
+  isActive: 'isActive',
+  viewCount: 'viewCount',
+  copyCount: 'copyCount',
+  sharedAt: 'sharedAt',
+  expiresAt: 'expiresAt'
+} as const
+
+export type SharedItineraryScalarFieldEnum = (typeof SharedItineraryScalarFieldEnum)[keyof typeof SharedItineraryScalarFieldEnum]
+
+
+export const SavedDestinationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  cityId: 'cityId',
+  savedAt: 'savedAt'
+} as const
+
+export type SavedDestinationScalarFieldEnum = (typeof SavedDestinationScalarFieldEnum)[keyof typeof SavedDestinationScalarFieldEnum]
 
 
 export const SortOrder = {

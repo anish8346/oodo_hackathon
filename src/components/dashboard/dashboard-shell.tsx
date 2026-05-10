@@ -1,53 +1,182 @@
-import { ActivityList } from "./activity-list";
-import { DashboardHeader } from "./dashboard-header";
-import { ProfileSummary } from "./profile-summary";
-import { StatCard } from "./stat-card";
+"use client";
 
-type DashboardUser = {
-  firstName?: string | null;
-  lastName?: string | null;
-  name?: string | null;
-  email?: string | null;
-  phone?: string | null;
-  city?: string | null;
-  country?: string | null;
-  additionalInfo?: string | null;
-  image?: string | null;
-  createdAt?: Date | null;
-};
+import { AnimatePresence, motion } from "framer-motion";
+import { Bell, LayoutDashboard, LogOut, Map, Menu, Settings } from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
+import { useState } from "react";
+import { Toaster } from "sonner";
+import { type DashboardUser } from "@/data/mock-dashboard";
+import { DashboardHome } from "./dashboard-home";
+import { Sidebar } from "./sidebar";
+import { UserAvatar } from "./user-avatar";
 
 type DashboardShellProps = {
   user: DashboardUser;
 };
 
+const routeMap: Record<string, string> = {
+  dashboard: "/dashboard",
+  trips: "/dashboard/trips",
+  itinerary: "/dashboard/itinerary",
+  cities: "/dashboard/cities",
+  activities: "/dashboard/activities",
+  budget: "/dashboard/budget",
+  packing: "/dashboard/packing",
+  notes: "/dashboard/notes",
+  settings: "/dashboard/settings",
+  admin: "/dashboard/admin",
+  "create-trip": "/dashboard/create",
+};
+
+const pathToPage: Record<string, string> = {
+  "/dashboard": "dashboard",
+  "/dashboard/trips": "trips",
+  "/dashboard/itinerary": "itinerary",
+  "/dashboard/cities": "cities",
+  "/dashboard/activities": "activities",
+  "/dashboard/budget": "budget",
+  "/dashboard/packing": "packing",
+  "/dashboard/notes": "notes",
+  "/dashboard/settings": "settings",
+  "/dashboard/admin": "admin",
+};
+
 export function DashboardShell({ user }: DashboardShellProps) {
-  const joinedDate = user.createdAt
-    ? new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric" }).format(
-        user.createdAt
-      )
-    : "Today";
+  const router = useRouter();
+  const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const displayName = user.firstName || user.name || "Traveler";
+  const activePage = pathToPage[pathname] ?? "dashboard";
+
+  function handleNavigate(page: string) {
+    router.push(routeMap[page] ?? "/dashboard");
+  }
+
+  function handleLogout() {
+    signOut({ callbackUrl: "/auth/signin" });
+  }
 
   return (
-    <main className="min-h-screen bg-zinc-50 text-zinc-950">
-      <DashboardHeader name={user.name} email={user.email} image={user.image} />
-      <div className="mx-auto w-full max-w-6xl space-y-6 px-4 py-6 sm:px-6 lg:px-8">
-        <section className="grid gap-4 md:grid-cols-3">
-          <StatCard label="Account Status" value="Active" detail="Ready for demo workflows" />
-          <StatCard label="User ID" value={user.email || "Email"} detail="Email address login" />
-          <StatCard label="Joined" value={joinedDate} detail="Profile created date" />
-        </section>
-        <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
-          <ProfileSummary
-            firstName={user.firstName}
-            lastName={user.lastName}
-            phone={user.phone}
-            city={user.city}
-            country={user.country}
-            additionalInfo={user.additionalInfo}
-          />
-          <ActivityList />
+    <div className="h-screen w-full overflow-hidden bg-[#f4f7f4] text-slate-950">
+      <Sidebar
+        activePage={activePage}
+        onNavigate={handleNavigate}
+        isMobileMenuOpen={isMobileMenuOpen}
+        onMobileMenuClose={() => setIsMobileMenuOpen(false)}
+        onLogout={handleLogout}
+      />
+
+      <div className="flex h-full min-w-0 flex-col overflow-hidden lg:pl-64">
+        <TopNav
+          user={user}
+          onMenuClick={() => setIsMobileMenuOpen(true)}
+          displayName={displayName}
+        />
+        <main className="min-h-0 min-w-0 flex-1 overflow-y-auto p-4 md:p-8">
+          <DashboardHome displayName={displayName} onNavigate={handleNavigate} />
+        </main>
+      </div>
+
+      <Toaster richColors position="top-right" />
+    </div>
+  );
+}
+
+function TopNav({
+  user,
+  displayName,
+  onMenuClick,
+}: {
+  user: DashboardUser;
+  displayName: string;
+  onMenuClick: () => void;
+}) {
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  return (
+    <header className="z-30 flex h-[70px] shrink-0 items-center justify-between border-b border-slate-200 bg-white/90 px-4 backdrop-blur md:px-6">
+      <div className="flex items-center gap-3">
+        <button
+          type="button"
+          aria-label="Open navigation"
+          onClick={onMenuClick}
+          className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 text-slate-700 transition hover:bg-slate-100 lg:hidden"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
+        <div>
+          <p className="text-sm font-medium text-slate-500">Dashboard</p>
+          <h1 className="text-lg font-semibold leading-tight text-slate-950">Trip Planner</h1>
         </div>
       </div>
-    </main>
+
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          aria-label="Notifications"
+          className="hidden h-10 w-10 items-center justify-center rounded-md border border-slate-200 text-slate-600 transition hover:bg-slate-100 sm:flex"
+        >
+          <Bell className="h-5 w-5" />
+        </button>
+        <div className="relative">
+          <button
+            type="button"
+            aria-expanded={isProfileOpen}
+            onClick={() => setIsProfileOpen((value) => !value)}
+            className="flex items-center gap-3 rounded-md border border-slate-200 bg-white px-2 py-1.5 transition hover:bg-slate-50"
+          >
+            <UserAvatar image={user.image} name={user.name} email={user.email} size="sm" />
+            <span className="hidden max-w-36 truncate text-left text-sm font-medium text-slate-800 md:block">
+              {displayName}
+            </span>
+          </button>
+          <AnimatePresence>
+            {isProfileOpen ? (
+              <motion.div
+                initial={{ opacity: 0, y: -6, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -6, scale: 0.98 }}
+                transition={{ duration: 0.16, ease: "easeOut" }}
+                className="absolute right-0 mt-2 w-56 overflow-hidden rounded-md border border-slate-200 bg-white py-2 shadow-xl"
+              >
+                <DropdownLink href="/dashboard" icon={LayoutDashboard} label="Dashboard" />
+                <DropdownLink href="/dashboard/trips" icon={Map} label="My Trips" />
+                <DropdownLink href="/dashboard/settings" icon={Settings} label="Settings" />
+                <button
+                  type="button"
+                  onClick={() => signOut({ callbackUrl: "/auth/signin" })}
+                  className="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm text-rose-700 transition hover:bg-rose-50"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Sign out
+                </button>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function DropdownLink({
+  href,
+  icon: Icon,
+  label,
+}: {
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 transition hover:bg-slate-100"
+    >
+      <Icon className="h-4 w-4" />
+      {label}
+    </Link>
   );
 }

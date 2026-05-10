@@ -1,8 +1,8 @@
-import { DashboardHome } from "@/components/dashboard/dashboard-home";
+import { SettingsPage } from "@/components/dashboard/settings-page";
 import { mockUser } from "@/data/mock-dashboard";
 import { auth } from "@/auth";
 
-export default async function DashboardPage() {
+export default async function SettingsRoute() {
   const session = await auth();
   const sessionUser = session?.user;
   const user = sessionUser
@@ -15,5 +15,5 @@ export default async function DashboardPage() {
       }
     : mockUser;
 
-  return <DashboardHome user={user} />;
+  return <SettingsPage user={user} />;
 }

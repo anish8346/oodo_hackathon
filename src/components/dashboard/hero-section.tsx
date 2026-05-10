@@ -17,20 +17,20 @@ export function HeroSection({ displayName, upcomingTrip, onNavigate }: HeroSecti
     <motion.section
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="relative overflow-hidden rounded-md bg-amber-500 p-6 text-slate-950 shadow-sm md:p-10 lg:p-12"
+      className="relative overflow-hidden rounded-md bg-[#0f766e] p-6 text-white shadow-sm md:p-10 lg:p-12"
     >
       <div className="relative z-10">
         <h1 className="mb-3 text-3xl font-bold tracking-normal md:text-4xl">
           Welcome back, {displayName}! ✈️
         </h1>
-        <p className="mb-6 text-lg text-slate-800">Your next adventure awaits</p>
+        <p className="mb-6 text-lg text-teal-50">Your next adventure awaits</p>
 
         {upcomingTrip && (
-          <div className="max-w-2xl rounded-md border border-amber-200 bg-white/80 p-5 backdrop-blur-md md:p-6">
+          <div className="max-w-2xl rounded-md border border-white/20 bg-white p-5 text-slate-950 shadow-lg md:p-6">
             <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <h2 className="mb-1 text-xl font-semibold">{upcomingTrip.title}</h2>
-                <div className="flex flex-col gap-2 text-sm text-slate-700 sm:flex-row sm:items-center sm:gap-4">
+                <div className="flex flex-col gap-2 text-sm text-slate-500 sm:flex-row sm:items-center sm:gap-4">
                   <span className="flex items-center gap-1">
                     <Calendar className="h-4 w-4" />
                     {upcomingTrip.startDate}
@@ -41,16 +41,16 @@ export function HeroSection({ displayName, upcomingTrip, onNavigate }: HeroSecti
                   </span>
                 </div>
               </div>
-              <Button variant="secondary" size="sm" onClick={() => onNavigate("trips")}>
+              <Button variant="outline" size="sm" onClick={() => onNavigate("trips")}>
                 View Details
               </Button>
             </div>
             <div className="space-y-2">
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-sm font-medium">
                 <span>Trip Progress</span>
                 <span>{upcomingTrip.progress}%</span>
               </div>
-              <Progress value={upcomingTrip.progress} className="h-2 bg-white/60" />
+              <Progress value={upcomingTrip.progress} className="h-2 bg-slate-100" />
             </div>
           </div>
         )}

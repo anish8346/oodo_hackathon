@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Toaster } from "sonner";
 import { type DashboardUser } from "@/data/mock-dashboard";
 import { DashboardHome } from "./dashboard-home";
+import { NotesView } from "./notes-view";
 import { Sidebar } from "./sidebar";
 import { UserAvatar } from "./user-avatar";
 
@@ -76,7 +77,11 @@ export function DashboardShell({ user }: DashboardShellProps) {
           displayName={displayName}
         />
         <main className="min-h-0 min-w-0 flex-1 overflow-y-auto p-4 md:p-8">
-          <DashboardHome displayName={displayName} onNavigate={handleNavigate} />
+          {activePage === "notes" ? (
+            <NotesView />
+          ) : (
+            <DashboardHome displayName={displayName} onNavigate={handleNavigate} />
+          )}
         </main>
       </div>
 

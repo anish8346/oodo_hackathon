@@ -1,26 +1,34 @@
-import type { HTMLAttributes } from "react";
-import { cn } from "@/lib/utils";
+import * as React from "react";
 
-type ProgressProps = HTMLAttributes<HTMLDivElement> & {
-  value: number;
-};
+import { cn } from "./utils";
 
-export function Progress({ value, className, ...props }: ProgressProps) {
-  const clampedValue = Math.min(100, Math.max(0, value));
+function Progress({
+  className,
+  value = 0,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & { value?: number }) {
+  const clampedValue = Math.max(0, Math.min(100, value));
 
   return (
     <div
-      className={cn("h-2 overflow-hidden rounded-full bg-slate-200", className)}
+      data-slot="progress"
       role="progressbar"
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuenow={clampedValue}
+      className={cn(
+        "bg-primary/20 relative h-2 w-full overflow-hidden rounded-full",
+        className,
+      )}
       {...props}
     >
       <div
-        className="h-full rounded-full bg-emerald-500 transition-all duration-500 ease-out"
+        data-slot="progress-indicator"
+        className="bg-primary h-full rounded-full transition-all"
         style={{ width: `${clampedValue}%` }}
       />
     </div>
   );
 }
+
+export { Progress };

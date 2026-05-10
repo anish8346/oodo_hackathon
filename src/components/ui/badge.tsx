@@ -1,25 +1,31 @@
-import type { HTMLAttributes, ReactNode } from "react";
-import { cn } from "@/lib/utils";
+import * as React from "react";
 
-type BadgeVariant = "default" | "secondary";
+import { cn } from "./utils";
 
-type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
+type BadgeVariant = "default" | "secondary" | "destructive" | "outline";
+
+const badgeVariantClasses: Record<BadgeVariant, string> = {
+  default: "border-transparent bg-primary text-primary-foreground",
+  secondary: "border-transparent bg-secondary text-secondary-foreground",
+  destructive: "border-transparent bg-destructive text-white",
+  outline: "text-foreground",
+};
+
+export function Badge({
+  className,
+  variant = "default",
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLSpanElement> & {
   variant?: BadgeVariant;
-  children: ReactNode;
-};
-
-const variantClasses: Record<BadgeVariant, string> = {
-  default: "bg-slate-950 text-white",
-  secondary: "bg-slate-100 text-slate-700",
-};
-
-export function Badge({ variant = "default", className, children, ...props }: BadgeProps) {
+}) {
   return (
     <span
+      data-slot="badge"
       className={cn(
-        "inline-flex items-center rounded-md px-2.5 py-1 text-xs font-medium",
-        variantClasses[variant],
-        className
+        "inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none transition-[color,box-shadow] overflow-hidden",
+        badgeVariantClasses[variant],
+        className,
       )}
       {...props}
     >

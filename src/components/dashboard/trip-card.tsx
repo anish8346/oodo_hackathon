@@ -65,7 +65,7 @@ export function TripCard({ trip, index }: TripCardProps) {
               <div className="mb-2 flex justify-between text-sm">
                 <span className="text-slate-500">Budget</span>
                 <span className="font-medium">
-                  ${trip.spent.toLocaleString()} / ${trip.budget.toLocaleString()}
+                  ₹{trip.spent.toLocaleString("en-IN")} / ₹{trip.budget.toLocaleString("en-IN")}
                 </span>
               </div>
               <Progress value={(trip.spent / trip.budget) * 100} className="h-2" />

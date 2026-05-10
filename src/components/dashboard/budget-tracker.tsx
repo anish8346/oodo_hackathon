@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  DollarSign,
+  IndianRupee,
   PieChart,
   Plus,
   TrendingDown,
@@ -99,11 +99,11 @@ export function BudgetTracker() {
           <CardContent className="p-6">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100">
-                <DollarSign className="h-5 w-5 text-emerald-700" />
+                <IndianRupee className="h-5 w-5 text-emerald-700" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Total Budget</p>
-                <p className="text-2xl font-bold">${totalBudget.toLocaleString()}</p>
+                <p className="text-2xl font-bold">₹{totalBudget.toLocaleString("en-IN")}</p>
               </div>
             </div>
           </CardContent>
@@ -116,7 +116,7 @@ export function BudgetTracker() {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Spent</p>
-                <p className="text-2xl font-bold">${totalSpent.toLocaleString()}</p>
+                <p className="text-2xl font-bold">₹{totalSpent.toLocaleString("en-IN")}</p>
               </div>
             </div>
           </CardContent>
@@ -130,7 +130,7 @@ export function BudgetTracker() {
               <div>
                 <p className="text-sm text-muted-foreground">Remaining</p>
                 <p className={`text-2xl font-bold ${remaining < 0 ? "text-red-600" : ""}`}>
-                  ${remaining.toLocaleString()}
+                  ₹{remaining.toLocaleString("en-IN")}
                 </p>
               </div>
             </div>
@@ -171,7 +171,7 @@ export function BudgetTracker() {
             />
             <Input
               type="number"
-              placeholder="Amount (USD)"
+              placeholder="Amount (INR)"
               value={newAmount}
               onChange={(e) => setNewAmount(e.target.value)}
             />
@@ -191,7 +191,7 @@ export function BudgetTracker() {
               <div key={cat} className="space-y-1.5">
                 <div className="flex items-center justify-between text-sm">
                   <Badge className={categoryColors[cat]}>{cat}</Badge>
-                  <span className="font-medium">${amount.toLocaleString()}</span>
+                  <span className="font-medium">₹{amount.toLocaleString("en-IN")}</span>
                 </div>
                 <Progress value={(amount / totalBudget) * 100} className="h-2" />
               </div>
@@ -223,7 +223,7 @@ export function BudgetTracker() {
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="font-semibold">${expense.amount.toLocaleString()}</span>
+                  <span className="font-semibold">₹{expense.amount.toLocaleString("en-IN")}</span>
                   <Button
                     variant="ghost"
                     size="icon"

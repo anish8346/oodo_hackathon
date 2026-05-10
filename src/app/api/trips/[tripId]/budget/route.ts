@@ -27,7 +27,7 @@ export async function PUT(request: NextRequest, context: Context) {
   const body = await request.json();
   await prisma.tripBudget.upsert({
     where: { tripId },
-    create: { tripId, totalBudget: parseMoney(body.totalBudget), currency: body.currency ?? user.preferredCurrency },
+    create: { tripId, totalBudget: parseMoney(body.totalBudget), currency: body.currency ?? user.preferredCurrency ?? "INR" },
     update: { totalBudget: parseMoney(body.totalBudget), currency: body.currency },
   });
   const budget = await recalculateTripBudget(tripId);

@@ -8,29 +8,29 @@ const prisma = new PrismaClient({
 });
 
 const cityImages: Record<string, string> = {
-  Paris: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=900&q=80",
-  Tokyo: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=900&q=80",
-  Bali: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=900&q=80",
-  "New York City": "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=900&q=80",
-  Rome: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=900&q=80",
-  Bangkok: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=900&q=80",
-  Dubai: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=900&q=80",
-  London: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=900&q=80",
-  Singapore: "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=900&q=80",
-  Istanbul: "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=900&q=80",
+  Mumbai: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=900&q=80",
+  Jaipur: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=900&q=80",
+  Goa: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=900&q=80",
+  Varanasi: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=900&q=80",
+  Delhi: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=900&q=80",
+  Kochi: "https://images.unsplash.com/photo-1590123717647-9d89d3be5289?auto=format&fit=crop&w=900&q=80",
+  Udaipur: "https://images.unsplash.com/photo-1615836245337-f5b9b2303f10?auto=format&fit=crop&w=900&q=80",
+  Rishikesh: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=900&q=80",
+  Bengaluru: "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=900&q=80",
+  Shillong: "https://images.unsplash.com/photo-1627894483216-2138af692e32?auto=format&fit=crop&w=900&q=80",
 };
 
 const citySeeds = [
-  ["Paris", "France", "Europe", 4.2, 98],
-  ["Tokyo", "Japan", "Asia", 4.5, 96],
-  ["Bali", "Indonesia", "Asia", 2.1, 94],
-  ["New York City", "United States", "North America", 4.8, 95],
-  ["Rome", "Italy", "Europe", 3.8, 93],
-  ["Bangkok", "Thailand", "Asia", 2.4, 91],
-  ["Dubai", "United Arab Emirates", "Middle East", 4.6, 90],
-  ["London", "United Kingdom", "Europe", 4.7, 92],
-  ["Singapore", "Singapore", "Asia", 4.3, 89],
-  ["Istanbul", "Turkiye", "Europe", 2.8, 88],
+  ["Mumbai", "India", "West India", 2.8, 98],
+  ["Jaipur", "India", "North India", 2.1, 96],
+  ["Goa", "India", "West India", 2.6, 95],
+  ["Varanasi", "India", "North India", 1.8, 94],
+  ["Delhi", "India", "North India", 2.5, 93],
+  ["Kochi", "India", "South India", 2.2, 91],
+  ["Udaipur", "India", "North India", 2.4, 90],
+  ["Rishikesh", "India", "North India", 1.9, 89],
+  ["Bengaluru", "India", "South India", 2.7, 88],
+  ["Shillong", "India", "North East India", 2.0, 87],
 ] as const;
 
 const categories = ["sightseeing", "food", "adventure", "culture", "shopping"];
@@ -74,7 +74,7 @@ async function main() {
           isAdmin: Boolean(isAdmin),
           city: "Pune",
           country: "India",
-          preferredCurrency: "USD",
+          preferredCurrency: "INR",
         },
       })
     )
@@ -94,11 +94,11 @@ async function main() {
         activities: {
           create: categories.map((category, index) => ({
             title: `${name} ${category} experience`,
-            description: `A curated ${category} stop in ${name}.`,
+            description: `A curated ${category} stop in ${name} with Indian travel pacing in mind.`,
             category,
             imageUrl: cityImages[name],
-            estimatedCost: money(20 + index * 18 + Math.round(costIndex * 10)),
-            currency: "USD",
+            estimatedCost: money(500 + index * 900 + Math.round(costIndex * 250)),
+            currency: "INR",
             durationMinutes: 90 + index * 30,
             avgRating: 4.2 + index * 0.12,
             isPopular: index < 2,
@@ -110,51 +110,51 @@ async function main() {
   }
 
   const owner = users[1];
-  const paris = cities.get("Paris")!;
-  const rome = cities.get("Rome")!;
-  const tokyo = cities.get("Tokyo")!;
-  const bali = cities.get("Bali")!;
+  const mumbai = cities.get("Mumbai")!;
+  const jaipur = cities.get("Jaipur")!;
+  const goa = cities.get("Goa")!;
+  const varanasi = cities.get("Varanasi")!;
 
-  const euroTrip = await prisma.trip.create({
+  const westIndiaTrip = await prisma.trip.create({
     data: {
       ownerId: owner.id,
-      title: "Europe Golden Loop",
-      description: "A culture-first route through Paris and Rome.",
+      title: "Mumbai Jaipur Goa Circuit",
+      description: "A culture, food, fort, and beach route across West and North India.",
       startDate: new Date("2026-06-12"),
       endDate: new Date("2026-06-21"),
-      coverImageUrl: paris.imageUrl,
+      coverImageUrl: mumbai.imageUrl,
       status: "planning",
       visibility: "shared",
-      budget: { create: { totalBudget: money(4200), estimatedTotal: money(980), actualSpent: money(260), currency: "USD" } },
+      budget: { create: { totalBudget: money(85000), estimatedTotal: money(32000), actualSpent: money(9000), currency: "INR" } },
       members: { create: [{ userId: owner.id, role: "owner" }, { userId: users[2].id, role: "editor" }] },
       checklist: {
         create: [
-          { itemName: "Passport", category: "documents", isPacked: true },
-          { itemName: "Walking shoes", category: "clothing" },
-          { itemName: "Universal adapter", category: "electronics" },
+          { itemName: "Aadhaar or ID proof", category: "documents", isPacked: true },
+          { itemName: "Comfortable walking shoes", category: "clothing" },
+          { itemName: "UPI backup and power bank", category: "electronics" },
         ],
       },
     },
   });
 
-  const asiaTrip = await prisma.trip.create({
+  const spiritualTrip = await prisma.trip.create({
     data: {
       ownerId: users[2].id,
-      title: "Asia Food Trail",
-      description: "Tokyo precision followed by Bali calm.",
+      title: "Varanasi Goa Slow Travel",
+      description: "Ganga aarti, old-city lanes, seafood shacks, and relaxed coastal time.",
       startDate: new Date("2026-08-04"),
       endDate: new Date("2026-08-15"),
-      coverImageUrl: tokyo.imageUrl,
+      coverImageUrl: varanasi.imageUrl,
       status: "planning",
-      budget: { create: { totalBudget: money(3600), estimatedTotal: money(840), actualSpent: money(120), currency: "USD" } },
+      budget: { create: { totalBudget: money(65000), estimatedTotal: money(24000), actualSpent: money(4000), currency: "INR" } },
       members: { create: [{ userId: users[2].id, role: "owner" }] },
-      checklist: { create: [{ itemName: "Camera", category: "electronics" }, { itemName: "Swimwear", category: "clothing" }] },
+      checklist: { create: [{ itemName: "Camera", category: "electronics" }, { itemName: "Light cotton clothes", category: "clothing" }] },
     },
   });
 
   for (const [trip, orderedCities] of [
-    [euroTrip, [paris, rome]],
-    [asiaTrip, [tokyo, bali]],
+    [westIndiaTrip, [mumbai, jaipur, goa]],
+    [spiritualTrip, [varanasi, goa]],
   ] as const) {
     for (const [index, city] of orderedCities.entries()) {
       const stop = await prisma.tripStop.create({
@@ -164,7 +164,7 @@ async function main() {
           stopOrder: index + 1,
           arrivalDate: new Date(index === 0 ? trip.startDate! : new Date(trip.startDate!.getTime() + 5 * 86400000)),
           departureDate: new Date(index === 0 ? new Date(trip.startDate!.getTime() + 4 * 86400000) : trip.endDate!),
-          notes: `Stay close to central ${city.name}.`,
+          notes: `Stay near convenient rail, metro, or local taxi access in ${city.name}.`,
         },
       });
       const activities = await prisma.cityActivity.findMany({ where: { cityId: city.id }, take: 2 });
@@ -181,8 +181,8 @@ async function main() {
       const budget = await prisma.tripBudget.findUniqueOrThrow({ where: { tripId: trip.id } });
       await prisma.budgetItem.createMany({
         data: [
-          { budgetId: budget.id, stopId: stop.id, category: "stay", label: `${city.name} hotel`, estimatedAmount: money(320), actualAmount: money(0) },
-          { budgetId: budget.id, stopId: stop.id, category: "meals", label: `${city.name} food fund`, estimatedAmount: money(180), actualAmount: money(60) },
+          { budgetId: budget.id, stopId: stop.id, category: "stay", label: `${city.name} stay`, estimatedAmount: money(8000), actualAmount: money(0), currency: "INR" },
+          { budgetId: budget.id, stopId: stop.id, category: "meals", label: `${city.name} food fund`, estimatedAmount: money(3500), actualAmount: money(1200), currency: "INR" },
         ],
       });
       await prisma.tripNote.create({
@@ -191,7 +191,7 @@ async function main() {
           userId: trip.ownerId,
           stopId: stop.id,
           title: `${city.name} day plan`,
-          content: "Leave room for one unplanned local recommendation.",
+          content: "Leave room for local food, market time, and transport delays.",
           noteDate: stop.arrivalDate ?? new Date(),
         },
       });
@@ -199,9 +199,9 @@ async function main() {
   }
 
   await prisma.sharedItinerary.create({
-    data: { tripId: euroTrip.id, publicSlug: "europe-golden-loop", isActive: true },
+    data: { tripId: westIndiaTrip.id, publicSlug: "mumbai-jaipur-goa-circuit", isActive: true },
   });
-  await prisma.savedDestination.create({ data: { userId: owner.id, cityId: bali.id } });
+  await prisma.savedDestination.create({ data: { userId: owner.id, cityId: goa.id } });
 
   console.log("Seeded Traveloop demo data. Login with admin@traveloop.test / traveloop123");
 }

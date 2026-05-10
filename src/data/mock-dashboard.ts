@@ -152,7 +152,7 @@ export const recommendedDestinations: RecommendedDestination[] = [
     image:
       "https://images.unsplash.com/photo-1585208798174-6cedd86e019a?auto=format&fit=crop&w=700&q=80",
     rating: 4.8,
-    costIndex: "$$",
+    costIndex: "₹₹",
   },
   {
     id: "bali",
@@ -161,7 +161,7 @@ export const recommendedDestinations: RecommendedDestination[] = [
     image:
       "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=700&q=80",
     rating: 4.9,
-    costIndex: "$",
+    costIndex: "₹",
   },
   {
     id: "queenstown",
@@ -170,7 +170,7 @@ export const recommendedDestinations: RecommendedDestination[] = [
     image:
       "https://images.unsplash.com/photo-1507699622108-4be3abd695ad?auto=format&fit=crop&w=700&q=80",
     rating: 4.7,
-    costIndex: "$$$",
+    costIndex: "₹₹₹",
   },
   {
     id: "marrakesh",
@@ -179,6 +179,6 @@ export const recommendedDestinations: RecommendedDestination[] = [
     image:
       "https://images.unsplash.com/photo-1548018560-c7196548e84d?auto=format&fit=crop&w=700&q=80",
     rating: 4.6,
-    costIndex: "$$",
+    costIndex: "₹₹",
   },
 ];

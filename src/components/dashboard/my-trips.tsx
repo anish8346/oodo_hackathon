@@ -182,8 +182,8 @@ export function MyTrips() {
                     <div className="flex justify-between text-sm mb-2">
                       <span className="text-muted-foreground">Budget</span>
                       <span className="font-medium">
-                        ${trip.spent.toLocaleString()} / $
-                        {trip.budget.toLocaleString()}
+                        ₹{trip.spent.toLocaleString("en-IN")} / ₹
+                        {trip.budget.toLocaleString("en-IN")}
                       </span>
                     </div>
                     <Progress

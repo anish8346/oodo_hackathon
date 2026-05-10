@@ -9,10 +9,10 @@ import {
   BarChart3,
   Calendar,
   Check,
-  DollarSign,
   FileText,
   Filter,
   Globe,
+  IndianRupee,
   Loader2,
   MapPin,
   MoreVertical,
@@ -68,8 +68,8 @@ function formatDate(value?: string | null) {
   return new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric" }).format(new Date(value));
 }
 
-function money(value: unknown, currency = "USD") {
-  return new Intl.NumberFormat("en", { style: "currency", currency }).format(Number(value ?? 0));
+function money(value: unknown, currency = "INR") {
+  return new Intl.NumberFormat("en-IN", { style: "currency", currency }).format(Number(value ?? 0));
 }
 
 export function WorkspacePage({ mode, displayName = "Traveler" }: Props) {
@@ -166,7 +166,7 @@ function DashboardScreen({ displayName }: { displayName: string }) {
           <div className="grid gap-4 md:grid-cols-3">
             <Metric icon={Calendar} label="Trips" value={trips.length} />
             <Metric icon={Globe} label="Cities available" value={cities.length} />
-            <Metric icon={DollarSign} label="Estimated spend" value={money(budgetTotal)} />
+            <Metric icon={IndianRupee} label="Estimated spend" value={money(budgetTotal)} />
           </div>
           {nextTrip ? <TripCard trip={nextTrip} /> : <EmptyState icon={MapPin} title="No trips yet" body="Create your first route and Traveloop will organize the rest." />}
           <div className="grid gap-4 md:grid-cols-4">
@@ -636,8 +636,8 @@ function BudgetScreen() {
     load(trip.id);
   }
   const chartData = useMemo(() => budget?.breakdown?.map((row: any) => ({ name: row.category, value: Number(row._sum.estimatedAmount ?? 0) })) ?? [], [budget]);
-  if (!trip) return <EmptyState icon={DollarSign} title="No budget yet" body="Create a trip to track costs." />;
-  return <div className="mx-auto max-w-7xl space-y-4"><SelectTrip trips={trips} value={trip.id} onChange={setTripId} /><div className="grid gap-4 md:grid-cols-3"><Metric icon={DollarSign} label="Budget" value={money(budget?.totalBudget, budget?.currency)} /><Metric icon={BarChart3} label="Estimated" value={money(budget?.estimatedTotal, budget?.currency)} /><Metric icon={Check} label="Actual" value={money(budget?.actualSpent, budget?.currency)} /></div>{budget?.overBudgetAlert ? <div className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">This trip is over budget.</div> : null}<Card><CardContent className="grid gap-4 md:grid-cols-2"><div className="h-64"><ResponsiveContainer><PieChart><Pie data={chartData} dataKey="value" nameKey="name">{chartData.map((_: any, i: number) => <Cell key={i} fill={palette[i % palette.length]} />)}</Pie><Tooltip /></PieChart></ResponsiveContainer></div><form onSubmit={addItem} className="grid gap-3"><Input name="label" label="Line item" /><select name="category" className="h-10 rounded-md border border-slate-200 px-3"><option>transport</option><option>stay</option><option>meals</option><option>activities</option><option>other</option></select><Input name="estimatedAmount" label="Estimated amount" type="number" /><Input name="actualAmount" label="Actual amount" type="number" /><Button type="submit">Add item</Button></form></CardContent></Card><Card><CardContent><div className="divide-y divide-slate-100">{budget?.items?.map((item: any) => <div key={item.id} className="flex justify-between py-3 text-sm"><span>{item.label || item.category}</span><span>{money(item.estimatedAmount, item.currency)}</span></div>)}</div></CardContent></Card></div>;
+  if (!trip) return <EmptyState icon={IndianRupee} title="No budget yet" body="Create a trip to track costs." />;
+  return <div className="mx-auto max-w-7xl space-y-4"><SelectTrip trips={trips} value={trip.id} onChange={setTripId} /><div className="grid gap-4 md:grid-cols-3"><Metric icon={IndianRupee} label="Budget" value={money(budget?.totalBudget, budget?.currency)} /><Metric icon={BarChart3} label="Estimated" value={money(budget?.estimatedTotal, budget?.currency)} /><Metric icon={Check} label="Actual" value={money(budget?.actualSpent, budget?.currency)} /></div>{budget?.overBudgetAlert ? <div className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">This trip is over budget.</div> : null}<Card><CardContent className="grid gap-4 md:grid-cols-2"><div className="h-64"><ResponsiveContainer><PieChart><Pie data={chartData} dataKey="value" nameKey="name">{chartData.map((_: any, i: number) => <Cell key={i} fill={palette[i % palette.length]} />)}</Pie><Tooltip /></PieChart></ResponsiveContainer></div><form onSubmit={addItem} className="grid gap-3"><Input name="label" label="Line item" /><select name="category" className="h-10 rounded-md border border-slate-200 px-3"><option>transport</option><option>stay</option><option>meals</option><option>activities</option><option>other</option></select><Input name="estimatedAmount" label="Estimated amount" type="number" /><Input name="actualAmount" label="Actual amount" type="number" /><Button type="submit">Add item</Button></form></CardContent></Card><Card><CardContent><div className="divide-y divide-slate-100">{budget?.items?.map((item: any) => <div key={item.id} className="flex justify-between py-3 text-sm"><span>{item.label || item.category}</span><span>{money(item.estimatedAmount, item.currency)}</span></div>)}</div></CardContent></Card></div>;
 }
 
 function ChecklistScreen() {

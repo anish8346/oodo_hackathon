@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Calendar, DollarSign, MapPin, TrendingUp, Users } from "lucide-react";
+import { Calendar, IndianRupee, MapPin, TrendingUp, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 interface Stat {
@@ -15,7 +15,7 @@ const STATS: Stat[] = [
   { label: "Total Trips", value: "12", icon: MapPin, color: "text-emerald-700" },
   { label: "Countries Visited", value: "8", icon: TrendingUp, color: "text-sky-700" },
   { label: "Travel Buddies", value: "24", icon: Users, color: "text-teal-700" },
-  { label: "Total Spent", value: "$12.5k", icon: DollarSign, color: "text-lime-700" },
+  { label: "Total Spent", value: "₹12.5k", icon: IndianRupee, color: "text-lime-700" },
 ];
 
 export function StatsSection() {

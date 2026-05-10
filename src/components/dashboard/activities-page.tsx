@@ -190,7 +190,7 @@ export function ActivitiesPage() {
                   </span>
                   <span className="flex items-center gap-1">
                     <Tag className="h-3.5 w-3.5" />{" "}
-                    {activity.cost === 0 ? "Free" : `$${activity.cost}`}
+                    {activity.cost === 0 ? "Free" : `₹${activity.cost.toLocaleString("en-IN")}`}
                   </span>
                 </div>
                 <Badge variant="secondary" className="text-xs">

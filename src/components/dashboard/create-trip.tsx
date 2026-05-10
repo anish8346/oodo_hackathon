@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import {
   ArrowLeft,
   Calendar,
-  DollarSign,
+  IndianRupee,
   Globe,
   ImagePlus,
   MapPin,
@@ -22,10 +22,10 @@ import { Textarea } from "../ui/textarea";
 import { toast } from "sonner";
 
 const coverOptions = [
-  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",
-  "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=900&q=80",
-  "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=900&q=80",
-  "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=900&q=80",
+  "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=900&q=80",
+  "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=900&q=80",
+  "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=900&q=80",
+  "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=900&q=80",
 ];
 
 export function CreateTrip() {
@@ -78,12 +78,35 @@ export function CreateTrip() {
 
     setLoading(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1200));
+    try {
+      const response = await fetch("/api/trips", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title,
+          description,
+          startDate,
+          endDate,
+          totalBudget: budget,
+          currency: "INR",
+          coverImageUrl: coverOptions[selectedCover],
+          destinations: destinations.map((destination) => destination.trim()).filter(Boolean),
+          travelers: travelers.map((traveler) => traveler.trim()).filter(Boolean),
+        }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data.error ?? "Could not create trip");
+      }
 
-    toast.success("Trip created successfully! 🎉");
-    setLoading(false);
-    router.push("/dashboard/trips");
+      toast.success("Trip created successfully");
+      router.push("/dashboard/trips");
+      router.refresh();
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not create trip");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -147,7 +170,7 @@ export function CreateTrip() {
                 </Label>
                 <Input
                   id="title"
-                  placeholder="e.g. European Summer Adventure"
+                  placeholder="e.g. Mumbai Jaipur Goa Circuit"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
@@ -160,7 +183,7 @@ export function CreateTrip() {
                 </Label>
                 <Textarea
                   id="description"
-                  placeholder="Describe your trip..."
+                  placeholder="Food walks, forts, beaches, train routes, and local stays..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={3}
@@ -198,13 +221,13 @@ export function CreateTrip() {
 
               <div className="space-y-2">
                 <Label htmlFor="budget" className="text-base font-semibold">
-                  <DollarSign className="inline h-4 w-4 mr-1" />
-                  Budget (USD)
+                  <IndianRupee className="inline h-4 w-4 mr-1" />
+                  Budget (INR)
                 </Label>
                 <Input
                   id="budget"
                   type="number"
-                  placeholder="5000"
+                  placeholder="75000"
                   value={budget}
                   onChange={(e) => setBudget(e.target.value)}
                 />
@@ -227,7 +250,7 @@ export function CreateTrip() {
               {destinations.map((dest, i) => (
                 <div key={i} className="flex items-center gap-2">
                   <Input
-                    placeholder={`Destination ${i + 1}`}
+                    placeholder={i === 0 ? "Mumbai" : i === 1 ? "Jaipur" : `Destination ${i + 1}`}
                     value={dest}
                     onChange={(e) => updateDestination(i, e.target.value)}
                   />

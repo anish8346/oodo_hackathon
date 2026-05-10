@@ -77,7 +77,7 @@ export async function savePublicUpload(file: File, folder: string) {
 export async function recalculateTripBudget(tripId: string) {
   const budget = await prisma.tripBudget.upsert({
     where: { tripId },
-    create: { tripId },
+    create: { tripId, currency: "INR" },
     update: {},
   });
 

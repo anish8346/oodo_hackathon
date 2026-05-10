@@ -1,5 +1,5 @@
-import { MyTrips } from "@/components/dashboard/my-trips";
+import { WorkspacePage } from "@/components/traveloop/workspace-page";
 
 export default function TripsPage() {
-  return <MyTrips />;
+  return <WorkspacePage mode="trips" />;
 }

@@ -1,5 +1,5 @@
-import { TripNotes } from "@/components/dashboard/trip-notes";
+import { NotesView } from "@/components/dashboard/notes-view";
 
 export default function NotesPage() {
-  return <TripNotes />;
+  return <NotesView />;
 }

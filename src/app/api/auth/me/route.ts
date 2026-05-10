@@ -23,7 +23,7 @@ export async function PUT(request: NextRequest) {
       city: body.city ?? user.city,
       country: body.country ?? user.country,
       additionalInfo: body.additionalInfo ?? user.additionalInfo,
-      image: body.image ?? user.image,
+      image: body.image !== undefined ? body.image : user.image,
       language: body.language ?? user.language,
       preferredCurrency: body.preferredCurrency ?? user.preferredCurrency,
     },

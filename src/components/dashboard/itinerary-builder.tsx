@@ -49,7 +49,7 @@ const typeIcons: Record<Activity["type"], React.ReactNode> = {
 
 const typeColors: Record<Activity["type"], string> = {
   sightseeing: "bg-purple-100 text-purple-700",
-  food: "bg-orange-100 text-orange-700",
+  food: "bg-[#0f766E]/10 text-[#0f766E]",
   transport: "bg-blue-100 text-blue-700",
   hotel: "bg-emerald-100 text-emerald-700",
   activity: "bg-pink-100 text-pink-700",

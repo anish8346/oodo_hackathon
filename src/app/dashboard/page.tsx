@@ -1,19 +1,13 @@
-import { DashboardHome } from "@/components/dashboard/dashboard-home";
-import { mockUser } from "@/data/mock-dashboard";
-import { auth } from "@/auth";
+import { WorkspacePage } from "@/components/traveloop/workspace-page";
+import { getDashboardUser } from "@/lib/dashboard-user";
+import { redirect } from "next/navigation";
 
 export default async function DashboardPage() {
-  const session = await auth();
-  const sessionUser = session?.user;
-  const user = sessionUser
-    ? {
-        ...mockUser,
-        name: sessionUser.name || mockUser.name,
-        firstName: sessionUser.name?.trim().split(/\s+/)[0] || mockUser.firstName,
-        email: sessionUser.email || mockUser.email,
-        image: sessionUser.image || null,
-      }
-    : mockUser;
+  const user = await getDashboardUser();
 
-  return <DashboardHome user={user} />;
+  if (!user) {
+    redirect("/auth/signin");
+  }
+
+  return <WorkspacePage mode="dashboard" displayName={user.firstName || user.name || "Traveler"} />;
 }

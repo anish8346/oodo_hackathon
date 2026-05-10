@@ -48,7 +48,7 @@ const initialNotes: Note[] = [
 
 const tagColors: Record<string, string> = {
   Sightseeing: "bg-purple-100 text-purple-700",
-  Food: "bg-orange-100 text-orange-700",
+  Food: "bg-[#0f766E]/10 text-[#0f766E]",
   Transport: "bg-blue-100 text-blue-700",
   Accommodation: "bg-emerald-100 text-emerald-700",
   General: "bg-slate-100 text-slate-700",

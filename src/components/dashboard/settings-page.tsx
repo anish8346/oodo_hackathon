@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Bell, Globe, Lock, Moon, Save, Shield, User } from "lucide-react";
+import { Bell, Camera, Globe, Lock, Moon, Save, Shield, Trash2, User } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Card, CardContent } from "../ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { toast } from "sonner";
@@ -16,6 +18,10 @@ type SettingsPageProps = {
 };
 
 export function SettingsPage({ user }: SettingsPageProps) {
+  const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [photoUrl, setPhotoUrl] = useState(user.image || "");
+  const [photoSaving, setPhotoSaving] = useState(false);
   const [profile, setProfile] = useState({
     firstName: user.firstName || "",
     lastName: user.lastName || "",
@@ -31,11 +37,106 @@ export function SettingsPage({ user }: SettingsPageProps) {
     setProfile((prev) => ({ ...prev, [field]: value }));
   }
 
+  function initials() {
+    const source = `${profile.firstName} ${profile.lastName}`.trim() || profile.email || "U";
+    return source
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((part) => part[0]?.toUpperCase())
+      .join("");
+  }
+
+  async function updateProfilePhoto(image: string | null) {
+    const response = await fetch("/api/auth/me", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ image }),
+    });
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      throw new Error(data.error ?? "Could not update profile photo");
+    }
+  }
+
+  async function handlePhotoChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setPhotoSaving(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", "profiles");
+
+      const uploadResponse = await fetch("/api/uploads", {
+        method: "POST",
+        body: formData,
+      });
+      const upload = await uploadResponse.json().catch(() => ({}));
+
+      if (!uploadResponse.ok) {
+        throw new Error(upload.error ?? "Could not upload photo");
+      }
+
+      await updateProfilePhoto(upload.url);
+      setPhotoUrl(upload.url);
+      router.refresh();
+      toast.success("Profile photo updated");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not update profile photo");
+    } finally {
+      setPhotoSaving(false);
+      event.target.value = "";
+    }
+  }
+
+  async function handlePhotoRemove() {
+    if (!photoUrl) return;
+
+    setPhotoSaving(true);
+    try {
+      await updateProfilePhoto(null);
+      setPhotoUrl("");
+      router.refresh();
+      toast.success("Profile photo removed");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not remove profile photo");
+    } finally {
+      setPhotoSaving(false);
+    }
+  }
+
   async function handleSave() {
     setSaving(true);
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    setSaving(false);
-    toast.success("Profile updated successfully");
+    try {
+      const response = await fetch("/api/auth/me", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+          firstName: profile.firstName,
+          lastName: profile.lastName,
+          phone: profile.phone,
+          city: profile.city,
+          country: profile.country,
+          additionalInfo: profile.bio,
+          image: photoUrl || null,
+          preferredCurrency: "INR",
+        }),
+      });
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.error ?? "Could not update profile");
+      }
+
+      toast.success("Profile updated successfully");
+      router.refresh();
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not update profile");
+    } finally {
+      setSaving(false);
+    }
   }
 
   const sections = [
@@ -79,6 +180,49 @@ export function SettingsPage({ user }: SettingsPageProps) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
+        <Card>
+          <CardHeader>
+            <CardTitle>Profile Picture</CardTitle>
+            <CardDescription>Update your profile photo</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
+              <Avatar className="h-24 w-24 border border-slate-200">
+                {photoUrl ? <AvatarImage src={photoUrl} alt={profile.firstName || "Profile photo"} /> : null}
+                <AvatarFallback className="text-xl font-semibold">{initials()}</AvatarFallback>
+              </Avatar>
+
+              <div className="flex flex-wrap gap-3">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handlePhotoChange}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={photoSaving}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <Camera className="mr-2 h-4 w-4" />
+                  {photoSaving ? "Uploading..." : "Change Photo"}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={photoSaving || !photoUrl}
+                  onClick={handlePhotoRemove}
+                >
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  Remove
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         <Card>
           <CardContent className="p-6 space-y-6">
             <div className="flex items-center gap-3 pb-4 border-b">
@@ -176,8 +320,8 @@ export function SettingsPage({ user }: SettingsPageProps) {
         <Card>
           <CardContent className="p-6 space-y-5">
             <div className="flex items-center gap-3 pb-4 border-b">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100">
-                <Shield className="h-5 w-5 text-orange-700" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0f766E]/10">
+                <Shield className="h-5 w-5 text-[#0f766E]" />
               </div>
               <div>
                 <h2 className="font-semibold text-lg">Security</h2>

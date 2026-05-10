@@ -54,22 +54,23 @@ async function main() {
   await prisma.city.deleteMany();
   await prisma.user.deleteMany();
 
-  const password = await hash("traveloop123", 12);
+  const adminPassword = await hash("traveloop123", 12);
+  const userPassword = await hash("user@1234", 12);
   const users = await Promise.all(
     [
-      ["Ava", "Admin", "admin@traveloop.test", true],
-      ["Maya", "Shah", "maya@traveloop.test", false],
-      ["Arjun", "Mehta", "arjun@traveloop.test", false],
-      ["Lina", "Patel", "lina@traveloop.test", false],
-      ["Noah", "Reed", "noah@traveloop.test", false],
-    ].map(([firstName, lastName, email, isAdmin]) =>
+      ["Ava", "Admin", "admin@traveloop.test", adminPassword, true],
+      ["Demo", "User", "user@gmail.com", userPassword, false],
+      ["Arjun", "Mehta", "arjun@traveloop.test", userPassword, false],
+      ["Lina", "Patel", "lina@traveloop.test", userPassword, false],
+      ["Noah", "Reed", "noah@traveloop.test", userPassword, false],
+    ].map(([firstName, lastName, email, password, isAdmin]) =>
       prisma.user.create({
         data: {
           firstName: firstName as string,
           lastName: lastName as string,
           name: `${firstName} ${lastName}`,
           email: email as string,
-          password,
+          password: password as string,
           emailVerified: new Date(),
           isAdmin: Boolean(isAdmin),
           city: "Pune",
@@ -203,7 +204,9 @@ async function main() {
   });
   await prisma.savedDestination.create({ data: { userId: owner.id, cityId: goa.id } });
 
-  console.log("Seeded Traveloop demo data. Login with admin@traveloop.test / traveloop123");
+  console.log("Seeded Traveloop demo data.");
+  console.log("Admin login: admin@traveloop.test / traveloop123");
+  console.log("User login: user@gmail.com / user@1234");
 }
 
 main()

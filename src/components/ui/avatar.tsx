@@ -1,45 +1,52 @@
-import type { HTMLAttributes, ImgHTMLAttributes, ReactNode } from "react";
-import { cn } from "@/lib/utils";
+import * as React from "react";
 
-type AvatarProps = HTMLAttributes<HTMLDivElement> & {
-  children: ReactNode;
-};
+import { cn } from "./utils";
 
-export function Avatar({ className, children, ...props }: AvatarProps) {
-  return (
-    <div
-      className={cn(
-        "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full bg-slate-200",
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </div>
-  );
-}
-
-export function AvatarImage({ className, alt = "", ...props }: ImgHTMLAttributes<HTMLImageElement>) {
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img alt={alt} className={cn("absolute inset-0 h-full w-full object-cover", className)} {...props} />
-  );
-}
-
-export function AvatarFallback({
+function Avatar({
   className,
   children,
   ...props
-}: HTMLAttributes<HTMLDivElement> & { children: ReactNode }) {
+}: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn(
-        "flex h-full w-full items-center justify-center bg-slate-900 text-sm font-semibold text-white",
-        className
-      )}
+      data-slot="avatar"
+      className={cn("relative flex size-10 shrink-0 overflow-hidden rounded-full", className)}
       {...props}
     >
       {children}
     </div>
   );
 }
+
+function AvatarImage({
+  className,
+  alt = "",
+  ...props
+}: React.ImgHTMLAttributes<HTMLImageElement>) {
+  return (
+    <img
+      data-slot="avatar-image"
+      alt={alt}
+      className={cn("aspect-square size-full object-cover", className)}
+      {...props}
+    />
+  );
+}
+
+function AvatarFallback({
+  className,
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      data-slot="avatar-fallback"
+      className={cn("bg-muted flex size-full items-center justify-center rounded-full", className)}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}
+
+export { Avatar, AvatarImage, AvatarFallback };

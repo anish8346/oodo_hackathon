@@ -4,6 +4,7 @@ import { compare } from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
 export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -13,20 +14,22 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          throw new Error("Invalid credentials");
+          return null;
         }
 
+        const email = String(credentials.email).trim().toLowerCase();
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
+          where: { email },
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            password: true,
+          },
         });
 
         if (!user || !user.password) {
-          throw new Error("User not found");
-        }
-
-        // Check if email is verified
-        if (!user.emailVerified) {
-          throw new Error("Please verify your email");
+          return null;
         }
 
         const isPasswordValid = await compare(
@@ -35,14 +38,13 @@ export const authOptions: NextAuthOptions = {
         );
 
         if (!isPasswordValid) {
-          throw new Error("Invalid password");
+          return null;
         }
 
         return {
           id: user.id,
           email: user.email,
           name: user.name,
-          image: user.image,
         };
       },
     }),
@@ -55,14 +57,20 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.picture = user.image;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
-        session.user.image = token.picture as string | null | undefined;
+
+        if (token.id) {
+          const user = await prisma.user.findUnique({
+            where: { id: token.id as string },
+            select: { image: true },
+          });
+          session.user.image = user?.image ?? null;
+        }
       }
       return session;
     },

@@ -46,3 +46,63 @@ export { Prisma }
  * 
  */
 export type User = Prisma.UserModel
+/**
+ * Model Trip
+ * 
+ */
+export type Trip = Prisma.TripModel
+/**
+ * Model TripMember
+ * 
+ */
+export type TripMember = Prisma.TripMemberModel
+/**
+ * Model City
+ * 
+ */
+export type City = Prisma.CityModel
+/**
+ * Model TripStop
+ * 
+ */
+export type TripStop = Prisma.TripStopModel
+/**
+ * Model CityActivity
+ * 
+ */
+export type CityActivity = Prisma.CityActivityModel
+/**
+ * Model StopActivity
+ * 
+ */
+export type StopActivity = Prisma.StopActivityModel
+/**
+ * Model TripBudget
+ * 
+ */
+export type TripBudget = Prisma.TripBudgetModel
+/**
+ * Model BudgetItem
+ * 
+ */
+export type BudgetItem = Prisma.BudgetItemModel
+/**
+ * Model PackingChecklist
+ * 
+ */
+export type PackingChecklist = Prisma.PackingChecklistModel
+/**
+ * Model TripNote
+ * 
+ */
+export type TripNote = Prisma.TripNoteModel
+/**
+ * Model SharedItinerary
+ * 
+ */
+export type SharedItinerary = Prisma.SharedItineraryModel
+/**
+ * Model SavedDestination
+ * 
+ */
+export type SavedDestination = Prisma.SavedDestinationModel

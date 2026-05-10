@@ -37,6 +37,9 @@ export type UserMinAggregateOutputType = {
   image: string | null
   password: string | null
   emailVerified: Date | null
+  language: string | null
+  preferredCurrency: string | null
+  isAdmin: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -54,6 +57,9 @@ export type UserMaxAggregateOutputType = {
   image: string | null
   password: string | null
   emailVerified: Date | null
+  language: string | null
+  preferredCurrency: string | null
+  isAdmin: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -71,6 +77,9 @@ export type UserCountAggregateOutputType = {
   image: number
   password: number
   emailVerified: number
+  language: number
+  preferredCurrency: number
+  isAdmin: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -90,6 +99,9 @@ export type UserMinAggregateInputType = {
   image?: true
   password?: true
   emailVerified?: true
+  language?: true
+  preferredCurrency?: true
+  isAdmin?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -107,6 +119,9 @@ export type UserMaxAggregateInputType = {
   image?: true
   password?: true
   emailVerified?: true
+  language?: true
+  preferredCurrency?: true
+  isAdmin?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -124,6 +139,9 @@ export type UserCountAggregateInputType = {
   image?: true
   password?: true
   emailVerified?: true
+  language?: true
+  preferredCurrency?: true
+  isAdmin?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -214,6 +232,9 @@ export type UserGroupByOutputType = {
   image: string | null
   password: string | null
   emailVerified: Date | null
+  language: string
+  preferredCurrency: string
+  isAdmin: boolean
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -252,8 +273,15 @@ export type UserWhereInput = {
   image?: Prisma.StringNullableFilter<"User"> | string | null
   password?: Prisma.StringNullableFilter<"User"> | string | null
   emailVerified?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  language?: Prisma.StringFilter<"User"> | string
+  preferredCurrency?: Prisma.StringFilter<"User"> | string
+  isAdmin?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  ownedTrips?: Prisma.TripListRelationFilter
+  memberships?: Prisma.TripMemberListRelationFilter
+  notes?: Prisma.TripNoteListRelationFilter
+  savedDestinations?: Prisma.SavedDestinationListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -269,8 +297,15 @@ export type UserOrderByWithRelationInput = {
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   password?: Prisma.SortOrderInput | Prisma.SortOrder
   emailVerified?: Prisma.SortOrderInput | Prisma.SortOrder
+  language?: Prisma.SortOrder
+  preferredCurrency?: Prisma.SortOrder
+  isAdmin?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  ownedTrips?: Prisma.TripOrderByRelationAggregateInput
+  memberships?: Prisma.TripMemberOrderByRelationAggregateInput
+  notes?: Prisma.TripNoteOrderByRelationAggregateInput
+  savedDestinations?: Prisma.SavedDestinationOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -289,8 +324,15 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   image?: Prisma.StringNullableFilter<"User"> | string | null
   password?: Prisma.StringNullableFilter<"User"> | string | null
   emailVerified?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  language?: Prisma.StringFilter<"User"> | string
+  preferredCurrency?: Prisma.StringFilter<"User"> | string
+  isAdmin?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  ownedTrips?: Prisma.TripListRelationFilter
+  memberships?: Prisma.TripMemberListRelationFilter
+  notes?: Prisma.TripNoteListRelationFilter
+  savedDestinations?: Prisma.SavedDestinationListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -306,6 +348,9 @@ export type UserOrderByWithAggregationInput = {
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   password?: Prisma.SortOrderInput | Prisma.SortOrder
   emailVerified?: Prisma.SortOrderInput | Prisma.SortOrder
+  language?: Prisma.SortOrder
+  preferredCurrency?: Prisma.SortOrder
+  isAdmin?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -329,6 +374,9 @@ export type UserScalarWhereWithAggregatesInput = {
   image?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   password?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   emailVerified?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  language?: Prisma.StringWithAggregatesFilter<"User"> | string
+  preferredCurrency?: Prisma.StringWithAggregatesFilter<"User"> | string
+  isAdmin?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -346,8 +394,15 @@ export type UserCreateInput = {
   image?: string | null
   password?: string | null
   emailVerified?: Date | string | null
+  language?: string
+  preferredCurrency?: string
+  isAdmin?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  ownedTrips?: Prisma.TripCreateNestedManyWithoutOwnerInput
+  memberships?: Prisma.TripMemberCreateNestedManyWithoutUserInput
+  notes?: Prisma.TripNoteCreateNestedManyWithoutUserInput
+  savedDestinations?: Prisma.SavedDestinationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -363,8 +418,15 @@ export type UserUncheckedCreateInput = {
   image?: string | null
   password?: string | null
   emailVerified?: Date | string | null
+  language?: string
+  preferredCurrency?: string
+  isAdmin?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  ownedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutOwnerInput
+  memberships?: Prisma.TripMemberUncheckedCreateNestedManyWithoutUserInput
+  notes?: Prisma.TripNoteUncheckedCreateNestedManyWithoutUserInput
+  savedDestinations?: Prisma.SavedDestinationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -380,8 +442,15 @@ export type UserUpdateInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedTrips?: Prisma.TripUpdateManyWithoutOwnerNestedInput
+  memberships?: Prisma.TripMemberUpdateManyWithoutUserNestedInput
+  notes?: Prisma.TripNoteUpdateManyWithoutUserNestedInput
+  savedDestinations?: Prisma.SavedDestinationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -397,8 +466,15 @@ export type UserUncheckedUpdateInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedTrips?: Prisma.TripUncheckedUpdateManyWithoutOwnerNestedInput
+  memberships?: Prisma.TripMemberUncheckedUpdateManyWithoutUserNestedInput
+  notes?: Prisma.TripNoteUncheckedUpdateManyWithoutUserNestedInput
+  savedDestinations?: Prisma.SavedDestinationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -414,6 +490,9 @@ export type UserCreateManyInput = {
   image?: string | null
   password?: string | null
   emailVerified?: Date | string | null
+  language?: string
+  preferredCurrency?: string
+  isAdmin?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -431,6 +510,9 @@ export type UserUpdateManyMutationInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -448,6 +530,9 @@ export type UserUncheckedUpdateManyInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -465,6 +550,9 @@ export type UserCountOrderByAggregateInput = {
   image?: Prisma.SortOrder
   password?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
+  language?: Prisma.SortOrder
+  preferredCurrency?: Prisma.SortOrder
+  isAdmin?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -482,6 +570,9 @@ export type UserMaxOrderByAggregateInput = {
   image?: Prisma.SortOrder
   password?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
+  language?: Prisma.SortOrder
+  preferredCurrency?: Prisma.SortOrder
+  isAdmin?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -499,8 +590,16 @@ export type UserMinOrderByAggregateInput = {
   image?: Prisma.SortOrder
   password?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
+  language?: Prisma.SortOrder
+  preferredCurrency?: Prisma.SortOrder
+  isAdmin?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserScalarRelationFilter = {
+  is?: Prisma.UserWhereInput
+  isNot?: Prisma.UserWhereInput
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -515,10 +614,558 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
+export type UserCreateNestedOneWithoutOwnedTripsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnedTripsInput, Prisma.UserUncheckedCreateWithoutOwnedTripsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnedTripsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutOwnedTripsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnedTripsInput, Prisma.UserUncheckedCreateWithoutOwnedTripsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnedTripsInput
+  upsert?: Prisma.UserUpsertWithoutOwnedTripsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOwnedTripsInput, Prisma.UserUpdateWithoutOwnedTripsInput>, Prisma.UserUncheckedUpdateWithoutOwnedTripsInput>
+}
+
+export type UserCreateNestedOneWithoutMembershipsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMembershipsInput, Prisma.UserUncheckedCreateWithoutMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMembershipsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutMembershipsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMembershipsInput, Prisma.UserUncheckedCreateWithoutMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMembershipsInput
+  upsert?: Prisma.UserUpsertWithoutMembershipsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMembershipsInput, Prisma.UserUpdateWithoutMembershipsInput>, Prisma.UserUncheckedUpdateWithoutMembershipsInput>
+}
+
+export type UserCreateNestedOneWithoutNotesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotesInput, Prisma.UserUncheckedCreateWithoutNotesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutNotesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotesInput, Prisma.UserUncheckedCreateWithoutNotesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotesInput
+  upsert?: Prisma.UserUpsertWithoutNotesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNotesInput, Prisma.UserUpdateWithoutNotesInput>, Prisma.UserUncheckedUpdateWithoutNotesInput>
+}
+
+export type UserCreateNestedOneWithoutSavedDestinationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSavedDestinationsInput, Prisma.UserUncheckedCreateWithoutSavedDestinationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSavedDestinationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSavedDestinationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSavedDestinationsInput, Prisma.UserUncheckedCreateWithoutSavedDestinationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSavedDestinationsInput
+  upsert?: Prisma.UserUpsertWithoutSavedDestinationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSavedDestinationsInput, Prisma.UserUpdateWithoutSavedDestinationsInput>, Prisma.UserUncheckedUpdateWithoutSavedDestinationsInput>
+}
+
+export type UserCreateWithoutOwnedTripsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  name?: string | null
+  email: string
+  phone?: string | null
+  city?: string | null
+  country?: string | null
+  additionalInfo?: string | null
+  image?: string | null
+  password?: string | null
+  emailVerified?: Date | string | null
+  language?: string
+  preferredCurrency?: string
+  isAdmin?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.TripMemberCreateNestedManyWithoutUserInput
+  notes?: Prisma.TripNoteCreateNestedManyWithoutUserInput
+  savedDestinations?: Prisma.SavedDestinationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutOwnedTripsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  name?: string | null
+  email: string
+  phone?: string | null
+  city?: string | null
+  country?: string | null
+  additionalInfo?: string | null
+  image?: string | null
+  password?: string | null
+  emailVerified?: Date | string | null
+  language?: string
+  preferredCurrency?: string
+  isAdmin?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.TripMemberUncheckedCreateNestedManyWithoutUserInput
+  notes?: Prisma.TripNoteUncheckedCreateNestedManyWithoutUserInput
+  savedDestinations?: Prisma.SavedDestinationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutOwnedTripsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnedTripsInput, Prisma.UserUncheckedCreateWithoutOwnedTripsInput>
+}
+
+export type UserUpsertWithoutOwnedTripsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOwnedTripsInput, Prisma.UserUncheckedUpdateWithoutOwnedTripsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnedTripsInput, Prisma.UserUncheckedCreateWithoutOwnedTripsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOwnedTripsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOwnedTripsInput, Prisma.UserUncheckedUpdateWithoutOwnedTripsInput>
+}
+
+export type UserUpdateWithoutOwnedTripsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  additionalInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.TripMemberUpdateManyWithoutUserNestedInput
+  notes?: Prisma.TripNoteUpdateManyWithoutUserNestedInput
+  savedDestinations?: Prisma.SavedDestinationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOwnedTripsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  additionalInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.TripMemberUncheckedUpdateManyWithoutUserNestedInput
+  notes?: Prisma.TripNoteUncheckedUpdateManyWithoutUserNestedInput
+  savedDestinations?: Prisma.SavedDestinationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutMembershipsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  name?: string | null
+  email: string
+  phone?: string | null
+  city?: string | null
+  country?: string | null
+  additionalInfo?: string | null
+  image?: string | null
+  password?: string | null
+  emailVerified?: Date | string | null
+  language?: string
+  preferredCurrency?: string
+  isAdmin?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  ownedTrips?: Prisma.TripCreateNestedManyWithoutOwnerInput
+  notes?: Prisma.TripNoteCreateNestedManyWithoutUserInput
+  savedDestinations?: Prisma.SavedDestinationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutMembershipsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  name?: string | null
+  email: string
+  phone?: string | null
+  city?: string | null
+  country?: string | null
+  additionalInfo?: string | null
+  image?: string | null
+  password?: string | null
+  emailVerified?: Date | string | null
+  language?: string
+  preferredCurrency?: string
+  isAdmin?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  ownedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutOwnerInput
+  notes?: Prisma.TripNoteUncheckedCreateNestedManyWithoutUserInput
+  savedDestinations?: Prisma.SavedDestinationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutMembershipsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMembershipsInput, Prisma.UserUncheckedCreateWithoutMembershipsInput>
+}
+
+export type UserUpsertWithoutMembershipsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMembershipsInput, Prisma.UserUncheckedUpdateWithoutMembershipsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMembershipsInput, Prisma.UserUncheckedCreateWithoutMembershipsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMembershipsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMembershipsInput, Prisma.UserUncheckedUpdateWithoutMembershipsInput>
+}
+
+export type UserUpdateWithoutMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  additionalInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedTrips?: Prisma.TripUpdateManyWithoutOwnerNestedInput
+  notes?: Prisma.TripNoteUpdateManyWithoutUserNestedInput
+  savedDestinations?: Prisma.SavedDestinationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  additionalInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedTrips?: Prisma.TripUncheckedUpdateManyWithoutOwnerNestedInput
+  notes?: Prisma.TripNoteUncheckedUpdateManyWithoutUserNestedInput
+  savedDestinations?: Prisma.SavedDestinationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutNotesInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  name?: string | null
+  email: string
+  phone?: string | null
+  city?: string | null
+  country?: string | null
+  additionalInfo?: string | null
+  image?: string | null
+  password?: string | null
+  emailVerified?: Date | string | null
+  language?: string
+  preferredCurrency?: string
+  isAdmin?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  ownedTrips?: Prisma.TripCreateNestedManyWithoutOwnerInput
+  memberships?: Prisma.TripMemberCreateNestedManyWithoutUserInput
+  savedDestinations?: Prisma.SavedDestinationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutNotesInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  name?: string | null
+  email: string
+  phone?: string | null
+  city?: string | null
+  country?: string | null
+  additionalInfo?: string | null
+  image?: string | null
+  password?: string | null
+  emailVerified?: Date | string | null
+  language?: string
+  preferredCurrency?: string
+  isAdmin?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  ownedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutOwnerInput
+  memberships?: Prisma.TripMemberUncheckedCreateNestedManyWithoutUserInput
+  savedDestinations?: Prisma.SavedDestinationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutNotesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotesInput, Prisma.UserUncheckedCreateWithoutNotesInput>
+}
+
+export type UserUpsertWithoutNotesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNotesInput, Prisma.UserUncheckedUpdateWithoutNotesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotesInput, Prisma.UserUncheckedCreateWithoutNotesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNotesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNotesInput, Prisma.UserUncheckedUpdateWithoutNotesInput>
+}
+
+export type UserUpdateWithoutNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  additionalInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedTrips?: Prisma.TripUpdateManyWithoutOwnerNestedInput
+  memberships?: Prisma.TripMemberUpdateManyWithoutUserNestedInput
+  savedDestinations?: Prisma.SavedDestinationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  additionalInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedTrips?: Prisma.TripUncheckedUpdateManyWithoutOwnerNestedInput
+  memberships?: Prisma.TripMemberUncheckedUpdateManyWithoutUserNestedInput
+  savedDestinations?: Prisma.SavedDestinationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSavedDestinationsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  name?: string | null
+  email: string
+  phone?: string | null
+  city?: string | null
+  country?: string | null
+  additionalInfo?: string | null
+  image?: string | null
+  password?: string | null
+  emailVerified?: Date | string | null
+  language?: string
+  preferredCurrency?: string
+  isAdmin?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  ownedTrips?: Prisma.TripCreateNestedManyWithoutOwnerInput
+  memberships?: Prisma.TripMemberCreateNestedManyWithoutUserInput
+  notes?: Prisma.TripNoteCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSavedDestinationsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  name?: string | null
+  email: string
+  phone?: string | null
+  city?: string | null
+  country?: string | null
+  additionalInfo?: string | null
+  image?: string | null
+  password?: string | null
+  emailVerified?: Date | string | null
+  language?: string
+  preferredCurrency?: string
+  isAdmin?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  ownedTrips?: Prisma.TripUncheckedCreateNestedManyWithoutOwnerInput
+  memberships?: Prisma.TripMemberUncheckedCreateNestedManyWithoutUserInput
+  notes?: Prisma.TripNoteUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSavedDestinationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSavedDestinationsInput, Prisma.UserUncheckedCreateWithoutSavedDestinationsInput>
+}
+
+export type UserUpsertWithoutSavedDestinationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSavedDestinationsInput, Prisma.UserUncheckedUpdateWithoutSavedDestinationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSavedDestinationsInput, Prisma.UserUncheckedCreateWithoutSavedDestinationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSavedDestinationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSavedDestinationsInput, Prisma.UserUncheckedUpdateWithoutSavedDestinationsInput>
+}
+
+export type UserUpdateWithoutSavedDestinationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  additionalInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedTrips?: Prisma.TripUpdateManyWithoutOwnerNestedInput
+  memberships?: Prisma.TripMemberUpdateManyWithoutUserNestedInput
+  notes?: Prisma.TripNoteUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSavedDestinationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  additionalInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedTrips?: Prisma.TripUncheckedUpdateManyWithoutOwnerNestedInput
+  memberships?: Prisma.TripMemberUncheckedUpdateManyWithoutUserNestedInput
+  notes?: Prisma.TripNoteUncheckedUpdateManyWithoutUserNestedInput
+}
+
+
+/**
+ * Count Type UserCountOutputType
+ */
+
+export type UserCountOutputType = {
+  ownedTrips: number
+  memberships: number
+  notes: number
+  savedDestinations: number
+}
+
+export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  ownedTrips?: boolean | UserCountOutputTypeCountOwnedTripsArgs
+  memberships?: boolean | UserCountOutputTypeCountMembershipsArgs
+  notes?: boolean | UserCountOutputTypeCountNotesArgs
+  savedDestinations?: boolean | UserCountOutputTypeCountSavedDestinationsArgs
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserCountOutputType
+   */
+  select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountOwnedTripsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TripWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TripMemberWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountNotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TripNoteWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSavedDestinationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SavedDestinationWhereInput
+}
 
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -534,8 +1181,16 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   image?: boolean
   password?: boolean
   emailVerified?: boolean
+  language?: boolean
+  preferredCurrency?: boolean
+  isAdmin?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  ownedTrips?: boolean | Prisma.User$ownedTripsArgs<ExtArgs>
+  memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
+  notes?: boolean | Prisma.User$notesArgs<ExtArgs>
+  savedDestinations?: boolean | Prisma.User$savedDestinationsArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -551,6 +1206,9 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   image?: boolean
   password?: boolean
   emailVerified?: boolean
+  language?: boolean
+  preferredCurrency?: boolean
+  isAdmin?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -568,6 +1226,9 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   image?: boolean
   password?: boolean
   emailVerified?: boolean
+  language?: boolean
+  preferredCurrency?: boolean
+  isAdmin?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -585,15 +1246,32 @@ export type UserSelectScalar = {
   image?: boolean
   password?: boolean
   emailVerified?: boolean
+  language?: boolean
+  preferredCurrency?: boolean
+  isAdmin?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "name" | "email" | "phone" | "city" | "country" | "additionalInfo" | "image" | "password" | "emailVerified" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "name" | "email" | "phone" | "city" | "country" | "additionalInfo" | "image" | "password" | "emailVerified" | "language" | "preferredCurrency" | "isAdmin" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  ownedTrips?: boolean | Prisma.User$ownedTripsArgs<ExtArgs>
+  memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
+  notes?: boolean | Prisma.User$notesArgs<ExtArgs>
+  savedDestinations?: boolean | Prisma.User$savedDestinationsArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
-  objects: {}
+  objects: {
+    ownedTrips: Prisma.$TripPayload<ExtArgs>[]
+    memberships: Prisma.$TripMemberPayload<ExtArgs>[]
+    notes: Prisma.$TripNotePayload<ExtArgs>[]
+    savedDestinations: Prisma.$SavedDestinationPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     firstName: string
@@ -607,6 +1285,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     image: string | null
     password: string | null
     emailVerified: Date | null
+    language: string
+    preferredCurrency: string
+    isAdmin: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -1003,6 +1684,10 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  ownedTrips<T extends Prisma.User$ownedTripsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownedTripsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  memberships<T extends Prisma.User$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TripMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notes<T extends Prisma.User$notesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TripNotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  savedDestinations<T extends Prisma.User$savedDestinationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$savedDestinationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SavedDestinationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1044,6 +1729,9 @@ export interface UserFieldRefs {
   readonly image: Prisma.FieldRef<"User", 'String'>
   readonly password: Prisma.FieldRef<"User", 'String'>
   readonly emailVerified: Prisma.FieldRef<"User", 'DateTime'>
+  readonly language: Prisma.FieldRef<"User", 'String'>
+  readonly preferredCurrency: Prisma.FieldRef<"User", 'String'>
+  readonly isAdmin: Prisma.FieldRef<"User", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -1063,6 +1751,10 @@ export type UserFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  /**
    * Filter, which User to fetch.
    */
   where: Prisma.UserWhereUniqueInput
@@ -1081,6 +1773,10 @@ export type UserFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  /**
    * Filter, which User to fetch.
    */
   where: Prisma.UserWhereUniqueInput
@@ -1098,6 +1794,10 @@ export type UserFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the User
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
   /**
    * Filter, which User to fetch.
    */
@@ -1147,6 +1847,10 @@ export type UserFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  /**
    * Filter, which User to fetch.
    */
   where?: Prisma.UserWhereInput
@@ -1194,6 +1898,10 @@ export type UserFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Omit specific fields from the User
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
   /**
    * Filter, which Users to fetch.
    */
@@ -1243,6 +1951,10 @@ export type UserCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  /**
    * The data needed to create a User.
    */
   data: Prisma.XOR<Prisma.UserCreateInput, Prisma.UserUncheckedCreateInput>
@@ -1290,6 +2002,10 @@ export type UserUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * Omit specific fields from the User
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
   /**
    * The data needed to update a User.
    */
@@ -1357,6 +2073,10 @@ export type UserUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  /**
    * The filter to search for the User to update in case it exists.
    */
   where: Prisma.UserWhereUniqueInput
@@ -1383,6 +2103,10 @@ export type UserDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  /**
    * Filter which User to delete.
    */
   where: Prisma.UserWhereUniqueInput
@@ -1403,6 +2127,102 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
+ * User.ownedTrips
+ */
+export type User$ownedTripsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Trip
+   */
+  select?: Prisma.TripSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Trip
+   */
+  omit?: Prisma.TripOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TripInclude<ExtArgs> | null
+  where?: Prisma.TripWhereInput
+  orderBy?: Prisma.TripOrderByWithRelationInput | Prisma.TripOrderByWithRelationInput[]
+  cursor?: Prisma.TripWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TripScalarFieldEnum | Prisma.TripScalarFieldEnum[]
+}
+
+/**
+ * User.memberships
+ */
+export type User$membershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TripMember
+   */
+  select?: Prisma.TripMemberSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TripMember
+   */
+  omit?: Prisma.TripMemberOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TripMemberInclude<ExtArgs> | null
+  where?: Prisma.TripMemberWhereInput
+  orderBy?: Prisma.TripMemberOrderByWithRelationInput | Prisma.TripMemberOrderByWithRelationInput[]
+  cursor?: Prisma.TripMemberWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TripMemberScalarFieldEnum | Prisma.TripMemberScalarFieldEnum[]
+}
+
+/**
+ * User.notes
+ */
+export type User$notesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TripNote
+   */
+  select?: Prisma.TripNoteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TripNote
+   */
+  omit?: Prisma.TripNoteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TripNoteInclude<ExtArgs> | null
+  where?: Prisma.TripNoteWhereInput
+  orderBy?: Prisma.TripNoteOrderByWithRelationInput | Prisma.TripNoteOrderByWithRelationInput[]
+  cursor?: Prisma.TripNoteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TripNoteScalarFieldEnum | Prisma.TripNoteScalarFieldEnum[]
+}
+
+/**
+ * User.savedDestinations
+ */
+export type User$savedDestinationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SavedDestination
+   */
+  select?: Prisma.SavedDestinationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SavedDestination
+   */
+  omit?: Prisma.SavedDestinationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SavedDestinationInclude<ExtArgs> | null
+  where?: Prisma.SavedDestinationWhereInput
+  orderBy?: Prisma.SavedDestinationOrderByWithRelationInput | Prisma.SavedDestinationOrderByWithRelationInput[]
+  cursor?: Prisma.SavedDestinationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SavedDestinationScalarFieldEnum | Prisma.SavedDestinationScalarFieldEnum[]
+}
+
+/**
  * User without action
  */
 export type UserDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1414,4 +2234,8 @@ export type UserDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Omit specific fields from the User
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
 }

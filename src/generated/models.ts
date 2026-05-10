@@ -9,4 +9,16 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User'
+export type * from './models/Trip'
+export type * from './models/TripMember'
+export type * from './models/City'
+export type * from './models/TripStop'
+export type * from './models/CityActivity'
+export type * from './models/StopActivity'
+export type * from './models/TripBudget'
+export type * from './models/BudgetItem'
+export type * from './models/PackingChecklist'
+export type * from './models/TripNote'
+export type * from './models/SharedItinerary'
+export type * from './models/SavedDestination'
 export type * from './commonInputTypes'

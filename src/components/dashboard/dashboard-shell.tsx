@@ -66,6 +66,7 @@ export function DashboardShell({ user }: DashboardShellProps) {
         isMobileMenuOpen={isMobileMenuOpen}
         onMobileMenuClose={() => setIsMobileMenuOpen(false)}
         onLogout={handleLogout}
+        user={user}
       />
 
       <div className="flex h-full min-w-0 flex-col overflow-hidden lg:pl-64">

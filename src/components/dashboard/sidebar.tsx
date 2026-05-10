@@ -14,7 +14,9 @@ import {
   Settings,
 } from "lucide-react";
 import { toast } from "sonner";
+import { type DashboardUser } from "@/data/mock-dashboard";
 import { cn } from "@/lib/utils";
+import { UserAvatar } from "./user-avatar";
 
 type SidebarProps = {
   activePage: string;
@@ -22,6 +24,7 @@ type SidebarProps = {
   isMobileMenuOpen?: boolean;
   onMobileMenuClose?: () => void;
   onLogout?: () => void;
+  user: DashboardUser;
 };
 
 const menuItems = [
@@ -43,7 +46,11 @@ export function Sidebar({
   isMobileMenuOpen,
   onMobileMenuClose,
   onLogout,
+  user,
 }: SidebarProps) {
+  const displayName = user.name || [user.firstName, user.lastName].filter(Boolean).join(" ") || "Traveler";
+  const email = user.email || "traveler@example.com";
+
   return (
     <>
       {isMobileMenuOpen ? (
@@ -99,12 +106,10 @@ export function Sidebar({
 
         <div className="border-t border-slate-200 p-4">
           <div className="flex items-center gap-3 rounded-xl px-4 py-2.5">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-sky-500 text-sm font-semibold text-white">
-              JD
-            </div>
+            <UserAvatar image={user.image} name={displayName} email={email} size="sm" />
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium text-slate-950">John Doe</p>
-              <p className="truncate text-xs text-slate-500">john@example.com</p>
+              <p className="truncate text-sm font-medium text-slate-950">{displayName}</p>
+              <p className="truncate text-xs text-slate-500">{email}</p>
             </div>
             <button
               type="button"

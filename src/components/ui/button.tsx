@@ -1,48 +1,64 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
-import { cn } from "@/lib/utils";
+import * as React from "react";
 
-type ButtonVariant = "default" | "secondary" | "ghost";
-type ButtonSize = "sm" | "default" | "lg";
+import { cn } from "./utils";
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  children: ReactNode;
+type ButtonVariant = "default" | "secondary" | "outline" | "ghost" | "link" | "destructive";
+type ButtonSize = "default" | "sm" | "lg" | "icon";
+
+const buttonVariantClasses: Record<ButtonVariant, string> = {
+  default: "bg-primary text-primary-foreground hover:bg-primary/90",
+  secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+  outline: "border bg-background text-foreground hover:bg-accent hover:text-accent-foreground",
+  ghost: "hover:bg-accent hover:text-accent-foreground",
+  link: "text-primary underline-offset-4 hover:underline",
+  destructive: "bg-destructive text-white hover:bg-destructive/90",
 };
 
-const variantClasses: Record<ButtonVariant, string> = {
-  default: "bg-slate-950 text-white hover:bg-slate-800",
-  secondary: "bg-white text-slate-950 hover:bg-white/90",
-  ghost: "bg-transparent text-slate-700 hover:bg-slate-100",
-};
-
-const sizeClasses: Record<ButtonSize, string> = {
-  sm: "h-9 px-3 text-sm",
-  default: "h-10 px-4 text-sm",
-  lg: "h-12 px-5 text-base",
+const buttonSizeClasses: Record<ButtonSize, string> = {
+  default: "h-9 px-4 py-2",
+  sm: "h-8 rounded-md gap-1.5 px-3",
+  lg: "h-10 rounded-md px-6",
+  icon: "size-9 rounded-md",
 };
 
 export function Button({
+  className,
   variant = "default",
   size = "default",
-  className,
-  children,
   type = "button",
+  children,
   ...props
-}: ButtonProps) {
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+}) {
   return (
     <button
       type={type}
+      data-slot="button"
       className={cn(
-        "inline-flex items-center justify-center rounded-md font-medium transition disabled:pointer-events-none disabled:opacity-50",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2",
-        variantClasses[variant],
-        sizeClasses[size],
-        className
+        "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 aria-invalid:border-destructive",
+        buttonVariantClasses[variant],
+        buttonSizeClasses[size],
+        className,
       )}
       {...props}
     >
       {children}
     </button>
+  );
+}
+
+export function buttonVariants({
+  variant = "default",
+  size = "default",
+}: {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+} = {}) {
+  return cn(
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 aria-invalid:border-destructive",
+    buttonVariantClasses[variant],
+    buttonSizeClasses[size],
   );
 }

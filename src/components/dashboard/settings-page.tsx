@@ -320,8 +320,8 @@ export function SettingsPage({ user }: SettingsPageProps) {
         <Card>
           <CardContent className="p-6 space-y-5">
             <div className="flex items-center gap-3 pb-4 border-b">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100">
-                <Shield className="h-5 w-5 text-orange-700" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0f766E]/10">
+                <Shield className="h-5 w-5 text-[#0f766E]" />
               </div>
               <div>
                 <h2 className="font-semibold text-lg">Security</h2>

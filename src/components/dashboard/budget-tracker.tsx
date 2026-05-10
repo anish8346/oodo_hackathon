@@ -28,7 +28,7 @@ type Expense = {
 const categoryColors: Record<string, string> = {
   Flights: "bg-blue-100 text-blue-700",
   Hotels: "bg-emerald-100 text-emerald-700",
-  Food: "bg-orange-100 text-orange-700",
+  Food: "bg-[#0f766E]/10 text-[#0f766E]",
   Activities: "bg-purple-100 text-purple-700",
   Transport: "bg-sky-100 text-sky-700",
   Shopping: "bg-pink-100 text-pink-700",
@@ -111,8 +111,8 @@ export function BudgetTracker() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100">
-                <TrendingDown className="h-5 w-5 text-orange-700" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0f766E]/10">
+                <TrendingDown className="h-5 w-5 text-[#0f766E]" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Spent</p>

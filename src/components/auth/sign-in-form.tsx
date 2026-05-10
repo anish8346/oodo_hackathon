@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { FormEvent, useState } from "react";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, ShieldCheck, UserRound } from "lucide-react";
 
 export function SignInForm() {
   const router = useRouter();
@@ -20,13 +20,17 @@ export function SignInForm() {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    await loginWithCredentials(email, password);
+  }
+
+  async function loginWithCredentials(loginEmail: string, loginPassword: string) {
     setLoading(true);
     setError(null);
 
     try {
       const result = await signIn("credentials", {
-        email,
-        password,
+        email: loginEmail,
+        password: loginPassword,
         redirect: false,
       });
 
@@ -42,6 +46,17 @@ export function SignInForm() {
     } finally {
       setLoading(false);
     }
+  }
+
+  async function handleDemoLogin(type: "admin" | "user") {
+    const credentials =
+      type === "admin"
+        ? { email: "admin@traveloop.test", password: "traveloop123" }
+        : { email: "user@gmail.com", password: "user@1234" };
+
+    setEmail(credentials.email);
+    setPassword(credentials.password);
+    await loginWithCredentials(credentials.email, credentials.password);
   }
 
   return (
@@ -141,6 +156,32 @@ export function SignInForm() {
           )}
           <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
         </button>
+
+        <div className="space-y-3 border-t border-slate-200 pt-5">
+          <p className="text-center text-sm font-medium text-slate-500">
+            No account? Use a demo login
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <button
+              type="button"
+              onClick={() => handleDemoLogin("admin")}
+              disabled={loading}
+              className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition-all hover:border-[#2563EB]/40 hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              <ShieldCheck className="h-4 w-4 text-[#2563EB]" />
+              Login as Demo Admin
+            </button>
+            <button
+              type="button"
+              onClick={() => handleDemoLogin("user")}
+              disabled={loading}
+              className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition-all hover:border-[#2563EB]/40 hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              <UserRound className="h-4 w-4 text-[#2563EB]" />
+              Login as Demo User
+            </button>
+          </div>
+        </div>
       </motion.form>
 
     </motion.div>

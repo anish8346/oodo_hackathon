@@ -43,7 +43,7 @@ const DUMMY_TRIPS = [
 
 const TRIP_CHIP: Record<string, string> = {
   "kyoto-spring":     "bg-rose-50 text-rose-600 border-rose-200",
-  "barcelona-summer": "bg-amber-50 text-amber-600 border-amber-200",
+  "barcelona-summer": "bg-[#0f766E]/10 text-[#0f766E] border-[#0f766E]/20",
   "iceland-aurora":   "bg-sky-50 text-sky-600 border-sky-200",
   general:            "bg-slate-100 text-slate-500 border-slate-200",
 };

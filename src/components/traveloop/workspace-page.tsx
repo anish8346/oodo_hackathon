@@ -11,18 +11,25 @@ import {
   Check,
   DollarSign,
   FileText,
+  Filter,
   Globe,
   Loader2,
   MapPin,
+  MoreVertical,
   Package,
   Plus,
   Search,
+  Share2,
   Trash2,
 } from "lucide-react";
+import { motion } from "framer-motion";
 import { Pie, PieChart, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { toast } from "sonner";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 
 type Mode =
   | "dashboard"
@@ -215,14 +222,298 @@ function CityCard({ city, onSave }: { city: any; onSave?: (id: string) => void }
 
 function TripsScreen() {
   const { trips, loading, refresh } = useTraveloopData();
+  const router = useRouter();
+  const [filter, setFilter] = useState<"all" | "upcoming" | "completed">("all");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredTrips = useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLowerCase();
+    return trips.filter((trip) => {
+      const category = getTripCategory(trip);
+      const destinations = getTripDestinations(trip);
+      const matchesFilter = filter === "all" || category === filter;
+      const matchesSearch =
+        !normalizedQuery ||
+        trip.title?.toLowerCase().includes(normalizedQuery) ||
+        trip.description?.toLowerCase().includes(normalizedQuery) ||
+        destinations.some((destination) => destination.toLowerCase().includes(normalizedQuery));
+      return matchesFilter && matchesSearch;
+    });
+  }, [filter, searchQuery, trips]);
+
   async function remove(id: string) {
     if (!confirm("Delete this trip?")) return;
     await api(`/api/trips/${id}`, { method: "DELETE" });
     toast.success("Trip deleted");
     refresh();
   }
+
+  async function share(id: string) {
+    try {
+      const data = await api(`/api/trips/${id}/share`, { method: "POST" });
+      toast.success("Opening public view...");
+      router.push(new URL(data.url, window.location.origin).pathname);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not share trip");
+    }
+  }
+
   if (loading) return <LoadingGrid />;
-  return <div className="mx-auto max-w-7xl space-y-4"><div className="flex justify-end"><Link href="/dashboard/create"><Button><Plus className="mr-2 h-4 w-4" />Create Trip</Button></Link></div>{trips.length ? <div className="grid gap-4 md:grid-cols-3">{trips.map((trip) => <TripCard key={trip.id} trip={trip} onDelete={remove} />)}</div> : <EmptyState icon={Calendar} title="No trips yet" body="Create a trip to start adding cities, activities, budgets, and notes." />}</div>;
+
+  return (
+    <div className="mx-auto max-w-7xl space-y-6">
+      <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-slate-950">My Trips</h1>
+          <p className="mt-2 text-slate-600">Manage and organize all your travel plans</p>
+        </div>
+        <Link href="/dashboard/create">
+          <Button size="lg">
+            <Plus className="mr-2 h-5 w-5" />
+            Create New Trip
+          </Button>
+        </Link>
+      </div>
+
+      <Card>
+        <CardContent className="p-4 md:p-6">
+          <div className="flex flex-col gap-4 lg:flex-row">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+              <input
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                placeholder="Search trips or destinations..."
+                className="h-11 w-full rounded-md border border-slate-200 bg-white pl-10 pr-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20"
+              />
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {[
+                { label: "All", value: "all" },
+                { label: "Upcoming", value: "upcoming" },
+                { label: "Completed", value: "completed" },
+              ].map((item) => (
+                <Button
+                  key={item.value}
+                  variant={filter === item.value ? "default" : "ghost"}
+                  onClick={() => setFilter(item.value as "all" | "upcoming" | "completed")}
+                  className={filter === item.value ? "" : "border border-slate-200 bg-white"}
+                >
+                  {item.label}
+                </Button>
+              ))}
+            </div>
+
+            <Button
+              variant="ghost"
+              className="border border-slate-200 bg-white"
+              onClick={() => toast.info("Advanced filters coming soon")}
+            >
+              <Filter className="mr-2 h-5 w-5" />
+              More Filters
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {filteredTrips.length ? (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {filteredTrips.map((trip, index) => (
+            <TripGridCard
+              key={trip.id}
+              trip={trip}
+              index={index}
+              onDelete={remove}
+              onShare={share}
+            />
+          ))}
+        </div>
+      ) : (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="py-16 text-center"
+        >
+          <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-slate-100">
+            <MapPin className="h-12 w-12 text-slate-400" />
+          </div>
+          <h3 className="text-xl font-semibold text-slate-950">No trips found</h3>
+          <p className="mx-auto mt-2 max-w-md text-slate-600">
+            {searchQuery ? "Try adjusting your search or filters" : "Start planning your next adventure!"}
+          </p>
+          <Link href="/dashboard/create" className="mt-6 inline-flex">
+            <Button>
+              <Plus className="mr-2 h-5 w-5" />
+              Create Your First Trip
+            </Button>
+          </Link>
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
+function TripGridCard({
+  trip,
+  index,
+  onDelete,
+  onShare,
+}: {
+  trip: any;
+  index: number;
+  onDelete: (id: string) => void;
+  onShare: (id: string) => void;
+}) {
+  const destinations = getTripDestinations(trip);
+  const travelers = getTripTravelers(trip);
+  const budget = Number(trip.budget?.totalBudget ?? 0);
+  const spent = Number(trip.budget?.actualSpent ?? trip.budget?.estimatedTotal ?? 0);
+  const budgetProgress = budget > 0 ? (spent / budget) * 100 : 0;
+  const progress = getTripProgress(trip);
+  const status = getTripCategory(trip);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.05 }}
+      whileHover={{ y: -4 }}
+    >
+      <Card className="group h-full cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-lg">
+        <div className="relative h-48 overflow-hidden bg-slate-200">
+          {trip.coverImageUrl ? (
+            <img
+              src={trip.coverImageUrl}
+              alt={trip.title}
+              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-amber-100 via-emerald-100 to-sky-100">
+              <MapPin className="h-12 w-12 text-slate-500" />
+            </div>
+          )}
+          <div className="absolute left-4 right-4 top-4 flex items-center justify-between">
+            <Badge
+              variant={status === "upcoming" ? "default" : "secondary"}
+              className="bg-white/90 text-slate-950 backdrop-blur-sm"
+            >
+              {status}
+            </Badge>
+            <button
+              type="button"
+              aria-label="Delete trip"
+              onClick={() => onDelete(trip.id)}
+              className="flex h-9 w-9 items-center justify-center rounded-md bg-white/90 text-slate-700 backdrop-blur-sm transition hover:bg-white hover:text-red-600"
+            >
+              <MoreVertical className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+
+        <CardContent className="p-6">
+          <h3 className="mb-3 text-lg font-semibold text-slate-950">{trip.title}</h3>
+
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-sm text-slate-500">
+              <MapPin className="h-4 w-4 shrink-0" />
+              <span className="truncate">
+                {destinations.length ? destinations.join(" -> ") : "No destinations yet"}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2 text-sm text-slate-500">
+              <Calendar className="h-4 w-4 shrink-0" />
+              <span>
+                {formatDate(trip.startDate)} - {formatDate(trip.endDate)}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <div className="flex -space-x-2">
+                {travelers.slice(0, 3).map((traveler, travelerIndex) => (
+                  <Avatar key={`${traveler.name}-${travelerIndex}`} className="h-8 w-8 border-2 border-white">
+                    <AvatarFallback>{traveler.name[0]}</AvatarFallback>
+                  </Avatar>
+                ))}
+                {travelers.length > 3 ? (
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-slate-100 text-xs font-medium text-slate-600">
+                    +{travelers.length - 3}
+                  </div>
+                ) : null}
+              </div>
+              <span className="text-sm text-slate-500">
+                {travelers.length} {travelers.length === 1 ? "traveler" : "travelers"}
+              </span>
+            </div>
+
+            <div className="border-t border-slate-100 pt-3">
+              <div className="mb-2 flex justify-between text-sm">
+                <span className="text-slate-500">Budget</span>
+                <span className="font-medium text-slate-900">
+                  {money(spent, trip.budget?.currency)} / {money(budget, trip.budget?.currency)}
+                </span>
+              </div>
+              <Progress value={budgetProgress} className="h-2" />
+            </div>
+
+            <div className="pt-1">
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-500">Progress</span>
+                <span className="font-medium text-slate-900">{progress}%</span>
+              </div>
+              <Progress value={progress} className="mt-2 h-2" />
+            </div>
+          </div>
+
+          <div className="mt-4 grid grid-cols-3 gap-2">
+            <Link href="/dashboard/itinerary" className="min-w-0">
+              <Button variant="ghost" size="sm" className="w-full border border-slate-200 bg-white">
+                Edit
+              </Button>
+            </Link>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="border border-slate-200 bg-white"
+              onClick={() => onShare(trip.id)}
+              aria-label="Share trip"
+            >
+              <Share2 className="h-4 w-4" />
+            </Button>
+            <Link href="/dashboard/itinerary/view" className="min-w-0">
+              <Button size="sm" className="w-full">
+                View
+              </Button>
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
+
+function getTripDestinations(trip: any): string[] {
+  return trip.stops?.map((stop: any) => stop.city?.name).filter(Boolean) ?? [];
+}
+
+function getTripTravelers(trip: any): { name: string }[] {
+  const members = trip.members ?? [];
+  return members.length ? members.map((member: any) => ({ name: member.role || "Traveler" })) : [{ name: "Traveler" }];
+}
+
+function getTripCategory(trip: any): "upcoming" | "completed" {
+  if (trip.status === "completed") return "completed";
+  if (trip.endDate && new Date(trip.endDate) < new Date()) return "completed";
+  return "upcoming";
+}
+
+function getTripProgress(trip: any) {
+  if (trip.status === "completed") return 100;
+  const stops = trip.stops?.length ?? 0;
+  const hasDates = Boolean(trip.startDate && trip.endDate);
+  const hasBudget = Number(trip.budget?.totalBudget ?? 0) > 0;
+  return Math.min(100, stops * 20 + (hasDates ? 25 : 0) + (hasBudget ? 15 : 0));
 }
 
 function CreateTripScreen() {

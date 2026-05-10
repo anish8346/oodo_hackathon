@@ -1,5 +1,5 @@
-import { WorkspacePage } from "@/components/traveloop/workspace-page";
+import { TripNotes } from "@/components/dashboard/trip-notes";
 
 export default function NotesPage() {
-  return <WorkspacePage mode="notes" />;
+  return <TripNotes />;
 }

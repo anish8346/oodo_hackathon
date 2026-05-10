@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Trip Planner",
-  description: "Plan trips, bookings, budgets, and itineraries in one dashboard.",
+  title: "Traveloop — Plan Your Perfect Trip",
+  description: "Discover destinations, build itineraries, track budgets, and organize your travels — all in one beautiful dashboard.",
 };
 
 export default function RootLayout({

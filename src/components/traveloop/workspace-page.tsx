@@ -30,6 +30,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { NotesView } from "@/components/dashboard/notes-view";
 
 type Mode =
   | "dashboard"
@@ -81,7 +82,7 @@ export function WorkspacePage({ mode, displayName = "Traveler" }: Props) {
   if (mode === "activities") return <ActivitiesScreen />;
   if (mode === "budget") return <BudgetScreen />;
   if (mode === "packing") return <ChecklistScreen />;
-  if (mode === "notes") return <NotesScreen />;
+  if (mode === "notes") return <NotesView />;
   if (mode === "profile") return <ProfileScreen />;
   return <AdminScreen />;
 }

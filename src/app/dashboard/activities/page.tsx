@@ -1,5 +1,5 @@
-import { WorkspacePage } from "@/components/traveloop/workspace-page";
+import { ActivitiesPage } from "@/components/dashboard/activities-page";
 
-export default function ActivitySearchPage() {
-  return <WorkspacePage mode="activities" />;
+export default function ActivitiesRoute() {
+  return <ActivitiesPage />;
 }

@@ -1,5 +1,5 @@
-import { WorkspacePage } from "@/components/traveloop/workspace-page";
+import { DiscoverCities } from "@/components/dashboard/discover-cities";
 
-export default function CitySearchPage() {
-  return <WorkspacePage mode="cities" />;
+export default function CitiesPage() {
+  return <DiscoverCities />;
 }

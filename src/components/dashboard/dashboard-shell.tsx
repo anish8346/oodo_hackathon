@@ -5,15 +5,16 @@ import { Bell, LayoutDashboard, LogOut, Map, Menu, Settings } from "lucide-react
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { Toaster } from "sonner";
 import { type DashboardUser } from "@/data/mock-dashboard";
+
 import { Sidebar } from "./sidebar";
 import { UserAvatar } from "./user-avatar";
 
 type DashboardShellProps = {
   user: DashboardUser;
-  children: ReactNode;
+  children?: React.ReactNode;
 };
 
 const routeMap: Record<string, string> = {
@@ -41,21 +42,6 @@ const pathToPage: Record<string, string> = {
   "/dashboard/notes": "notes",
   "/dashboard/settings": "settings",
   "/dashboard/admin": "admin",
-  "/dashboard/create": "create-trip",
-};
-
-const titleMap: Record<string, string> = {
-  dashboard: "Dashboard",
-  trips: "My Trips",
-  itinerary: "Itinerary",
-  cities: "Discover Cities",
-  activities: "Activities",
-  budget: "Budget",
-  packing: "Packing List",
-  notes: "Notes",
-  settings: "Profile",
-  admin: "Admin",
-  "create-trip": "Create Trip",
 };
 
 export function DashboardShell({ user, children }: DashboardShellProps) {
@@ -89,7 +75,6 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
           user={user}
           onMenuClick={() => setIsMobileMenuOpen(true)}
           displayName={displayName}
-          title={titleMap[activePage] ?? "Traveloop"}
         />
         <main className="min-h-0 min-w-0 flex-1 overflow-y-auto p-4 md:p-8">
           {children}
@@ -104,12 +89,10 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
 function TopNav({
   user,
   displayName,
-  title,
   onMenuClick,
 }: {
   user: DashboardUser;
   displayName: string;
-  title: string;
   onMenuClick: () => void;
 }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -126,8 +109,8 @@ function TopNav({
           <Menu className="h-5 w-5" />
         </button>
         <div>
-          <p className="text-sm font-medium text-slate-500">Traveloop</p>
-          <h1 className="text-lg font-semibold leading-tight text-slate-950">{title}</h1>
+          <p className="text-sm font-medium text-slate-500">Dashboard</p>
+          <h1 className="text-lg font-semibold leading-tight text-slate-950">Trip Planner</h1>
         </div>
       </div>
 

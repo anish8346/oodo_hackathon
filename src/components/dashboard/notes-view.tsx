@@ -562,8 +562,11 @@ export function NotesView() {
   const [mounted, setMounted]     = useState(false);
 
   useEffect(() => {
-    setNotes(load());
-    setMounted(true);
+    const timer = window.setTimeout(() => {
+      setNotes(load());
+      setMounted(true);
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   // Filtered + sorted list

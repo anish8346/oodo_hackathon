@@ -1,5 +1,5 @@
-import { WorkspacePage } from "@/components/traveloop/workspace-page";
+import { ItineraryBuilder } from "@/components/dashboard/itinerary-builder";
 
-export default function ItineraryBuilderPage() {
-  return <WorkspacePage mode="itinerary" />;
+export default function ItineraryPage() {
+  return <ItineraryBuilder />;
 }

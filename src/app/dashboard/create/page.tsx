@@ -1,5 +1,5 @@
-import { WorkspacePage } from "@/components/traveloop/workspace-page";
+import { CreateTrip } from "@/components/dashboard/create-trip";
 
 export default function CreateTripPage() {
-  return <WorkspacePage mode="create" />;
+  return <CreateTrip />;
 }

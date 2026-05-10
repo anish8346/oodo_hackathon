@@ -1,5 +1,5 @@
-import { WorkspacePage } from "@/components/traveloop/workspace-page";
+import { BudgetTracker } from "@/components/dashboard/budget-tracker";
 
 export default function BudgetPage() {
-  return <WorkspacePage mode="budget" />;
+  return <BudgetTracker />;
 }

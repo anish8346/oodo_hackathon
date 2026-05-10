@@ -1,5 +1,5 @@
-import { WorkspacePage } from "@/components/traveloop/workspace-page";
+import { PackingList } from "@/components/dashboard/packing-list";
 
-export default function ChecklistPage() {
-  return <WorkspacePage mode="packing" />;
+export default function PackingPage() {
+  return <PackingList />;
 }
